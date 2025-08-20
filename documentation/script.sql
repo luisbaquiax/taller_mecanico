@@ -103,6 +103,20 @@ CREATE TABLE inventary_movements(
     FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
 
+-- type-jobs
+CREATE TABLE type_jobs(
+    type_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_type_job VARCHAR(100) NOT NULL,
+    description_type_job VARCHAR(200) NOT NULL
+);
+
+-- status-jobs
+CREATE TABLE status_jobs(
+    status_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_status_job VARCHAR(100) NOT NULL,
+    description_status_job VARCHAR(200) NOT NULL
+);
+
 -- jobs
 CREATE TABLE jobs(
     job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -110,14 +124,16 @@ CREATE TABLE jobs(
     vehicle_id INT NOT NULL,
     started_at DATETIME NULL,
     finished_at DATETIME NULL,
-    type ENUM('correctivo','preventivo') NOT NULL,
-    status ENUM('pendiente','evaluacion','autorizado','en curso','pausado','finalizado','cancelado','finalizado sin ejecucion') DEFAULT 'pendiente',
+    type_job_id INT NOT NULL,
+    status_job_id INT NOT NULL,
     description TEXT,
     estimated_hours DECIMAL(6,2) DEFAULT 0.00,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by) REFERENCES users(user_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),
+    FOREIGN KEY (type_job_id) REFERENCES type_jobs(type_job_id),
+    FOREIGN KEY (status_job_id) REFERENCES status_jobs(status_job_id)
 );
 
 -- jobs services
