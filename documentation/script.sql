@@ -9,7 +9,7 @@ CREATE TABLE rols_user(
     description_rol VARCHAR(200) NOT NULL
 );
 
--- usuarios
+-- users
 CREATE TABLE users(
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     rol_id INT NOT NULL,
