@@ -9,6 +9,13 @@ CREATE TABLE rols_user(
     description_rol VARCHAR(200) NOT NULL
 );
 
+-- type method two factors
+CREATE TABLE type_two_factor(
+    type_two_factor_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_type_two_factor VARCHAR(200) NOT NULL,
+    description_type_two_factor VARCHAR(200) NOT NULL
+);
+
 -- users
 CREATE TABLE users(
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -23,8 +30,9 @@ CREATE TABLE users(
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     two_factor_auth TINYINT NOT NULL DEFAULT 0,
-    two_factor_method ENUM('email', 'sms') NOT NULL DEFAULT 'email',
-    FOREIGN KEY (rol_id) REFERENCES rols_user(rol_id)
+    type_two_factor_id INT,
+    FOREIGN KEY (rol_id) REFERENCES rols_user(rol_id),
+    FOREIGN KEY (type_two_factor_id) REFERENCES type_two_factor(type_two_factor_id)
 );
 
 CREATE TABLE password_reset(

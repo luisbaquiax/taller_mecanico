@@ -1,4 +1,4 @@
-package org.luisbaquiax.apimechanicalworkshop;
+package org.ayd.apimecahnicalworkshop;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

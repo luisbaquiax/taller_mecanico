@@ -1,4 +1,4 @@
-package org.luisbaquiax.apimechanicalworkshop;
+package org.ayd.apimecahnicalworkshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
