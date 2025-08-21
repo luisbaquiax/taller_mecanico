@@ -1,4 +1,4 @@
-package org.ayd.apimechanicalworkshop;
+package org.luisbaquiax.apimechanicalworkshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
