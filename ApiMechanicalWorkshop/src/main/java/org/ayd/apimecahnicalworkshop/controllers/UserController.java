@@ -1,30 +1,28 @@
 package org.ayd.apimecahnicalworkshop.controllers;
 
+import org.ayd.apimecahnicalworkshop.dto.userdto.UserDTO;
+import org.ayd.apimecahnicalworkshop.dto.userdto.UserResponseDTO;
 import org.ayd.apimecahnicalworkshop.entities.User;
 import org.ayd.apimecahnicalworkshop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.ayd.apimecahnicalworkshop.utils.Encriptation;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
-    private Encriptation encriptation;
-
-    public UserController() {
-        this.encriptation = new Encriptation();
-    }
 
     @PostMapping("/save")
-    public User saveUser(@RequestBody User user) {
-        user.setPassword(encriptation.encrypt(user.getPassword()));
-        return userService.saveUser(user);
+    public UserResponseDTO saveUser(@RequestBody UserDTO userDTO) {
+        return userService.saveUser(userDTO);
     }
 
     @GetMapping("/all")
-    public Iterable<User> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 }

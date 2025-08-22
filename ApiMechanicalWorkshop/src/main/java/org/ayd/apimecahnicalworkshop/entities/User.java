@@ -17,6 +17,9 @@ public class User {
     private Long userId;
 
     @Column(name = "rol_id", nullable = false)
+    private Long rolId;
+
+    @Column(name = "username", nullable = false, length = 100, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
