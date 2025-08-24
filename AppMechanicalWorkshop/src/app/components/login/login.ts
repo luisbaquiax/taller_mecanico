@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../../services/user-service/User.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,9 @@ export class Login {
 
   hide = signal(true);
 
+  constructor(private userService: UserService) {
+  }
+
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
@@ -38,6 +42,14 @@ export class Login {
       const password = this.loginForm.get('password')?.value;
       console.log('Username:', username);
       console.log('Password:', password);
+      this.userService.getUserByUsernamePassword(username!, password!).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+        }
+      });
     }
   }
 }
