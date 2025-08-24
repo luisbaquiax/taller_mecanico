@@ -167,16 +167,24 @@ CREATE TABLE jobs_parts(
     FOREIGN KEY (part_id) REFERENCES parts(part_id)
 );
 
+-- status update jobs
+CREATE TABLE status_update_jobs(
+    status_update_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_status_update_job VARCHAR(100) NOT NULL,
+    description_status_update_job VARCHAR(200) NOT NULL
+);
+
 -- updates jobs
 CREATE TABLE updates_jobs(
     update_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     job_id INT NOT NULL,
     created_by INT NULL,
-    update_type ENUM('nota','inicio','pausa','reanudacion','finalizacion','diagnostico','uso_repuesto') DEFAULT 'nota',
+    status_update_job_id INT NOT NULL,
     notes TEXT,
     hours_spent DECIMAL(6,2) DEFAULT 0.00, -- horas trabajadas
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (status_update_job_id) REFERENCES status_update_jobs(status_update_job_id),
     FOREIGN KEY (job_id) REFERENCES jobs(job_id),
     FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
