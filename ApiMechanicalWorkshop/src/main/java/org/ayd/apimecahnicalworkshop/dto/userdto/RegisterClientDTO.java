@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class RegisterClientDTO {
     @NotNull(message = "Role ID is required")
     private Long rolId;
 
@@ -32,4 +32,10 @@ public class UserDTO {
 
     private String lastName;
 
+    @NotEmpty(message = "NIT is required")
+    @Length(min = 13, max = 13, message = "NIT must be 13 characters long")
+    private String nit;
+
+    @NotEmpty(message = "Address is required")
+    private String address;
 }
