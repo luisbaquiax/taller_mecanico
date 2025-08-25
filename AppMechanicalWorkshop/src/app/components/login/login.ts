@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user-service/User.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { UserService } from '../../services/user-service/User.service';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -28,7 +30,7 @@ export class Login {
 
   hide = signal(true);
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   clickEvent(event: MouseEvent) {
@@ -44,7 +46,7 @@ export class Login {
       console.log('Password:', password);
       this.userService.getUserByUsernamePassword(username!, password!).subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
+          this.router.navigate(['/admin-nav']);
         },
         error: (error) => {
           console.error('Login failed:', error);

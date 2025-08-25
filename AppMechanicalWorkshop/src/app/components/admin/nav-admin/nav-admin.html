@@ -1,0 +1,106 @@
+<mat-sidenav-container class="h-screen">
+  <!-- Sidebar -->
+  <mat-sidenav mode="side" opened class="w-72 bg-gray-900 text-white">
+    <div class="p-4 text-xl font-bold border-b border-gray-700">Administrador</div>
+
+    <nav class="flex flex-col p-2 space-y-2">
+      <!-- Gestión de usuarios -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Gestión de usuarios</h3>
+        <a
+          routerLink="/users"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">group</mat-icon>
+          Crear / Editar / Desactivar / Reactivar
+        </a>
+        <a
+          routerLink="/roles"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">security</mat-icon>
+          Roles y permisos
+        </a>
+      </div>
+
+      <!-- Gestión de servicios -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400 hover:text-white">
+          Gestión de servicios y mantenimientos
+        </h3>
+        <a
+          routerLink="/jobs"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">build</mat-icon>
+          Tipos de mantenimiento
+        </a>
+        <a
+          routerLink="/assignment"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">assignment</mat-icon>
+          Asignar trabajos
+        </a>
+        <a
+          routerLink="/solicitudes"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">check_circle</mat-icon>
+          Aprobar / Rechazar solicitudes
+        </a>
+      </div>
+
+      <!-- Supervisión de operaciones -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+          Supervisión de operaciones
+        </h3>
+        <a
+          routerLink="/operations"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">visibility</mat-icon>
+          Trabajos en curso
+        </a>
+        <a
+          routerLink="/reportes"
+          routerLinkActive="bg-gray-800"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">bar_chart</mat-icon>
+          Reportes y costos
+        </a>
+      </div>
+
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+          Configuración y ajustes
+        </h3>
+        <button
+          type="button"
+          routerLinkActive="bg-gray-800"
+          class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">logout</mat-icon>
+          Cerrar sesión
+        </button>
+
+      </div>
+    </nav>
+  </mat-sidenav>
+
+  <!-- Contenido -->
+  <mat-sidenav-content class="p-6 bg-gray-100">
+    <button mat-icon-button (click)="toggleSidenav()" class="md:hidden">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
