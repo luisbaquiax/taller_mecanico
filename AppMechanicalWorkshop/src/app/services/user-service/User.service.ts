@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { UserDTO } from '../../interfaces/UserDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +12,14 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-
-  public getUserByUsernamePassword(username: string, password: string) {
-    return this.http.post(`${this.apiUrl}/login`, { username, password });
+  /**
+   * Service to get user by username and password
+   * @param username
+   * @param password
+   * @returns
+   */
+  public getUserByUsernamePassword(username: string, password: string): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.apiUrl}/login`, { username, password });
   }
 
 }
