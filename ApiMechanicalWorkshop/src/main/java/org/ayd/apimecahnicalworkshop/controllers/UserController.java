@@ -34,6 +34,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/bystatus/{active}")
+    public List<UserResponseDTO> getUsersByStatus(@PathVariable boolean active) {
+        return userService.getUsersByActive(active);
+    }
+
     @PostMapping("/login")
     public UserResponseDTO loginUser(@Valid @RequestBody UserLoginDTO userLogin) {
         return userService.userLogin(userLogin);
