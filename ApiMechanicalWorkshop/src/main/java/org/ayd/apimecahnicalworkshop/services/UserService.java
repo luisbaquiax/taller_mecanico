@@ -175,4 +175,20 @@ public class UserService {
         );
     }
 
+    public List<UserResponseDTO> getUsersByActive(boolean active) {
+        List<User> users = repository.getUserByActive(active);
+        return users.stream().map(user -> new UserResponseDTO(
+                user.getUserId(),
+                user.getRolId(),
+                user.getUsername(),
+                user.isActive(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getName(),
+                user.getLastName(),
+                user.isTwoFactorAuth(),
+                user.getTypeTwoFactorId()
+        )).collect(Collectors.toList());
+    }
+
 }

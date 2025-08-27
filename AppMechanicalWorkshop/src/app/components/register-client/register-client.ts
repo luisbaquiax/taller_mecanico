@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -11,9 +11,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import {
+  MatSnackBar,
+  MatSnackBarAction,
+  MatSnackBarActions,
+  MatSnackBarLabel,
+  MatSnackBarRef,
+} from '@angular/material/snack-bar';
 import { F, V } from '@angular/cdk/keycodes';
-import { RegisterClient } from '../../interfaces/RegisterClient';
+import { RegisterClientDTO } from '../../interfaces/RegisterClient';
 import { Roles } from '../../enums/Roles';
+import { UserService } from '../../services/user-service/User.service';
+import { UserDTO } from '../../interfaces/UserDTO';
 
 @Component({
   selector: 'app-register-client',
@@ -37,7 +46,7 @@ export class RegisterClientComponent {
   hide = signal(true);
   registerForm: FormGroup;
 
-  clientNew: RegisterClient = {
+  clientNew: RegisterClientDTO = {
     rolId: 0,
     username: '',
     email: '',
@@ -49,7 +58,9 @@ export class RegisterClientComponent {
     address: '',
   };
 
-  constructor(private fb: FormBuilder) {
+  durationInSeconds = 5;
+
+  constructor(private fb: FormBuilder, private userService: UserService, private _snackBar: MatSnackBar) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
@@ -94,7 +105,28 @@ export class RegisterClientComponent {
       this.clientNew.phone = this.registerForm.get('phone')?.value;
       this.clientNew.nit = this.registerForm.get('nit')?.value;
       this.clientNew.address = this.registerForm.get('address')?.value;
-      console.log(this.clientNew);
+
+      this.userService.regiterClient(this.clientNew).subscribe({
+        next: (data: UserDTO) => {
+          this._snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
+            duration: this.durationInSeconds * 1000,
+          });
+          this.registerForm.reset();
+        },
+        error: (error) => {
+          if (error.status === 409) {
+            this._snackBar.open(`${error.error.message}`, 'Cerrar', {
+              duration: this.durationInSeconds * 1000,
+            });
+          } else {
+            this._snackBar.open('Error al crear la cuenta', 'Cerrar', {
+              duration: this.durationInSeconds * 1000,
+            });
+          }
+        },
+      });
     }
   }
+
+
 }

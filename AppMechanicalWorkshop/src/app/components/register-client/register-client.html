@@ -59,7 +59,7 @@
       <!-- Teléfono -->
       <mat-form-field floatLabel="always" class="w-full mb-4">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="phone" placeholder="(502) 1234-5678" />
+        <input matInput formControlName="phone" placeholder="(502) 1234-5678" minlength="8" maxlength="8" />
         @if (registerForm.get('phone')?.hasError('required')) {
         <mat-error>El teléfono es obligatorio</mat-error>
         }
@@ -68,7 +68,7 @@
       <!-- NIT -->
       <mat-form-field floatLabel="always" class="w-full mb-4">
         <mat-label>NIT</mat-label>
-        <input matInput formControlName="nit" placeholder="12345678" />
+        <input matInput formControlName="nit" placeholder="12345678" minlength="8" maxlength="8"/>
         @if (registerForm.get('nit')?.hasError('required')) {
         <mat-error>El NIT es obligatorio</mat-error>
         }

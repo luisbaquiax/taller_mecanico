@@ -33,7 +33,7 @@ public class RegisterClientDTO {
     private String lastName;
 
     @NotEmpty(message = "NIT is required")
-    @Length(min = 13, max = 13, message = "NIT must be 13 characters long")
+    @Length(min = 8, max = 8, message = "NIT must be 13 characters long")
     private String nit;
 
     @NotEmpty(message = "Address is required")

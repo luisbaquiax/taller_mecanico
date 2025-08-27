@@ -1,4 +1,4 @@
-export interface RegisterClient {
+export interface RegisterClientDTO {
   rolId: number;
   username: string;
   password: string;
