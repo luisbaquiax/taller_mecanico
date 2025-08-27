@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserDTO } from '../../interfaces/UserDTO';
+import { RegisterClientDTO as RegisterClientDTO } from '../../interfaces/RegisterClient';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,24 @@ export class UserService {
    */
   public getUserByUsernamePassword(username: string, password: string): Observable<UserDTO> {
     return this.http.post<UserDTO>(`${this.apiUrl}/login`, { username, password });
+  }
+
+  /**
+   * Service to register a new user
+   * @param user
+   * @returns
+   */
+  public registerUser(user: UserDTO): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.apiUrl}/createUser`, user);
+  }
+
+  /**
+   * Service to register a new client
+   * @param cliente
+   * @returns
+   */
+  public regiterClient(cliente: RegisterClientDTO): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.apiUrl}/createClient`, cliente);
   }
 
 }
