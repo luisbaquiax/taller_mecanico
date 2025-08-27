@@ -67,8 +67,8 @@ public class UserService {
 
     /**
      * Register a new client
-     * @param user
-     * @return
+     * @param user - RegisterClientDTO
+     * @return UserResponseDTO
      */
     public UserResponseDTO registerClient(RegisterClientDTO user) {
         if (repository.existsByUsername(user.getUsername())) {
@@ -176,7 +176,7 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getUsersByActive(boolean active) {
-        List<User> users = repository.getUserByActive(active);
+        List<User> users = (List<User>) repository.getUserByIsActive(active);
         return users.stream().map(user -> new UserResponseDTO(
                 user.getUserId(),
                 user.getRolId(),

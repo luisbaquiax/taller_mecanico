@@ -8,20 +8,33 @@
       <div>
         <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Gestión de usuarios</h3>
         <a
-          routerLink="/users"
-          routerLinkActive="bg-gray-800"
+          routerLink="list-users"
+          routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
           <mat-icon class="mr-2">group</mat-icon>
-          Crear / Editar / Desactivar / Reactivar
+          Lista de usuarios (activar/desactivar)
         </a>
         <a
-          routerLink="/roles"
-          routerLinkActive="bg-gray-800"
+          routerLink="register-user"
+          routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
-          <mat-icon class="mr-2">security</mat-icon>
-          Roles y permisos
+          <mat-icon class="mr-2">person_add</mat-icon>
+          Agregar usuario
+        </a>
+      </div>
+
+      <!-- Gestión de vehiculos -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Gestión de vehiculos</h3>
+        <a
+          routerLink="register-vehicle"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">add_circle</mat-icon>
+          Agregar vehículo
         </a>
       </div>
 
@@ -32,7 +45,7 @@
         </h3>
         <a
           routerLink="/jobs"
-          routerLinkActive="bg-gray-800"
+          routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
           <mat-icon class="mr-2">build</mat-icon>
@@ -40,7 +53,7 @@
         </a>
         <a
           routerLink="/assignment"
-          routerLinkActive="bg-gray-800"
+          routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
           <mat-icon class="mr-2">assignment</mat-icon>
@@ -98,6 +111,7 @@
 
   <!-- Contenido -->
   <mat-sidenav-content class="p-6 bg-gray-100">
+    <h1 class="text-xl font-bold ml-4">Taller Central</h1>
     <button mat-icon-button (click)="toggleSidenav()" class="md:hidden">
       <mat-icon>menu</mat-icon>
     </button>

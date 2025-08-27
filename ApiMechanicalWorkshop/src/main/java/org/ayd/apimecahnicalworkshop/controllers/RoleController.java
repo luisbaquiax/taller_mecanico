@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/roles")
-public class RolesControler {
+public class RoleController {
     @Autowired
     private RolesService rolesService;
 

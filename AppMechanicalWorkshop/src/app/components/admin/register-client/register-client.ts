@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -19,10 +19,10 @@ import {
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
 import { F, V } from '@angular/cdk/keycodes';
-import { RegisterClientDTO } from '../../interfaces/RegisterClient';
-import { Roles } from '../../enums/Roles';
-import { UserService } from '../../services/user-service/User.service';
-import { UserDTO } from '../../interfaces/UserDTO';
+import { RegisterClientDTO } from '../../../interfaces/RegisterClient';
+import { Roles } from '../../../enums/Roles';
+import { UserService } from '../../../services/user-service/User.service';
+import { UserDTO } from '../../../interfaces/UserDTO';
 
 @Component({
   selector: 'app-register-client',

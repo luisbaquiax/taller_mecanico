@@ -34,11 +34,28 @@ export class UserService {
 
   /**
    * Service to register a new client
-   * @param cliente
+   * @param client
    * @returns
    */
-  public regiterClient(cliente: RegisterClientDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.apiUrl}/createClient`, cliente);
+  public regiterClient(client: RegisterClientDTO): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.apiUrl}/createClient`, client);
+  }
+
+  /**
+   * List all users
+   * @returns All users
+   */
+  public getAllUsers(): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/all`);
+  }
+
+  /**
+   * List users by their active status
+   * @param isActive
+   * @returns Users filtered by active status
+   */
+  public getUserByIsActive(isActive: boolean): Observable<UserDTO[]> {
+    return this.http.get<UserDTO[]>(`${this.apiUrl}/isActive/${isActive}`);
   }
 
 }

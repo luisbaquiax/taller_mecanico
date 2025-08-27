@@ -17,8 +17,9 @@ public class Vehicle {
     @Column(name = "vehicle_id", nullable = false)
     private Long vehicleId;
 
-    @Column(name = "client_id", nullable = false)
-    private Long clientId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @Column(name = "brand", nullable = false, length = 100)
     private String brand;
@@ -31,6 +32,10 @@ public class Vehicle {
 
     @Column(name = "color", nullable = false, length = 100)
     private String color;
+
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private String createdAt;
+
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private String updatedAt;
 }
