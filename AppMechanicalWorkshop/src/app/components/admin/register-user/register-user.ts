@@ -29,6 +29,8 @@ import { UserService } from '../../../services/user-service/User.service';
 import { UserDTO } from '../../../interfaces/UserDTO';
 import { RoleDTO } from '../../../interfaces/RoleDTO';
 import { RoleService } from '../../../services/Role.service';
+import { SupplierType } from '../../../enums/SupplierType';
+import { UserRegisterDTO } from '../../../interfaces/UserRegisterDTO';
 
 @Component({
   selector: 'app-register-user',
@@ -66,8 +68,26 @@ export class RegisterUser {
     address: '',
   };
 
+  userNew: UserRegisterDTO = {
+    username: '',
+    rolId: 0,
+    password: '',
+    email: '',
+    phone: '',
+    name: '',
+    lastName: '',
+  };
+
   durationInSeconds = 5;
   roles: RoleDTO[] = [];
+
+  selectedRole: number = 0;
+  shwoInputNit: boolean = false;
+  showTypeSupplier: boolean = false;
+  supplierTypes: string[] = [
+    SupplierType.getName(SupplierType.PERSON),
+    SupplierType.getName(SupplierType.COMPANY),
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -91,7 +111,7 @@ export class RegisterUser {
         ],
       ],
       nit: [
-        '',
+        '00000000',
         [
           Validators.required,
           Validators.minLength(8),
@@ -99,8 +119,9 @@ export class RegisterUser {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      address: ['', Validators.required],
+      address: ['dirección', Validators.required],
       rolId: ['', Validators.required],
+      supplierType: [SupplierType.getName(SupplierType.COMPANY), Validators.required],
     });
 
     this.setRoles();
@@ -118,36 +139,93 @@ export class RegisterUser {
   }
 
   onSubmit() {
+    this.selectedRole = this.registerForm.get('rolId')?.value;
     if (this.registerForm.valid) {
-      this.clientNew.rolId = this.registerForm.get('rolId')?.value;
-      this.clientNew.username = this.registerForm.get('username')?.value;
-      this.clientNew.email = this.registerForm.get('email')?.value;
-      this.clientNew.password = this.registerForm.get('password')?.value;
-      this.clientNew.name = this.registerForm.get('name')?.value;
-      this.clientNew.lastName = this.registerForm.get('last_name')?.value;
-      this.clientNew.phone = this.registerForm.get('phone')?.value;
-      this.clientNew.nit = this.registerForm.get('nit')?.value;
-      this.clientNew.address = this.registerForm.get('address')?.value;
+      console.log('enviando datos...');
+      if (this.selectedRole === Roles.getId(Roles.CLIENT)) {
+        this.registerClient();
+      } else if (this.selectedRole === Roles.getId(Roles.SUPPLIER)) {
+        this.registerEmployee(this.registerForm.get('supplierType')?.value);
+      } else {
+        this.registerEmployee('employee');
+      }
+    } else {
+      console.log(this.registerForm.errors);
+    }
+  }
 
-      this.userService.regiterClient(this.clientNew).subscribe({
-        next: (data: UserDTO) => {
-          this._snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
+  verifyRole() {
+    this.selectedRole = this.registerForm.get('rolId')?.value;
+    this.shwoInputNit = this.selectedRole === Roles.getId(Roles.CLIENT);
+    this.showTypeSupplier = this.selectedRole === Roles.getId(Roles.SUPPLIER);
+  }
+
+  registerClient() {
+    this.clientNew.rolId = this.registerForm.get('rolId')?.value;
+    this.clientNew.username = this.registerForm.get('username')?.value;
+    this.clientNew.email = this.registerForm.get('email')?.value;
+    this.clientNew.password = this.registerForm.get('password')?.value;
+    this.clientNew.name = this.registerForm.get('name')?.value;
+    this.clientNew.lastName = this.registerForm.get('last_name')?.value;
+    this.clientNew.phone = this.registerForm.get('phone')?.value;
+    this.clientNew.nit = this.registerForm.get('nit')?.value;
+    this.clientNew.address = this.registerForm.get('address')?.value;
+
+    this.userService.regiterClient(this.clientNew).subscribe({
+      next: (data: UserDTO) => {
+        this._snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
+          duration: this.durationInSeconds * 1000,
+        });
+        this.resetForm();
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this._snackBar.open(`${error.error.message}`, 'Cerrar', {
             duration: this.durationInSeconds * 1000,
           });
-          this.registerForm.reset();
-        },
-        error: (error) => {
-          if (error.status === 409) {
-            this._snackBar.open(`${error.error.message}`, 'Cerrar', {
-              duration: this.durationInSeconds * 1000,
-            });
-          } else {
-            this._snackBar.open('Error al crear la cuenta', 'Cerrar', {
-              duration: this.durationInSeconds * 1000,
-            });
-          }
-        },
-      });
-    }
+        } else {
+          this._snackBar.open('Error al crear la cuenta', 'Cerrar', {
+            duration: this.durationInSeconds * 1000,
+          });
+        }
+      },
+    });
+  }
+
+  registerEmployee(supplierType: string) {
+    this.userNew.rolId = this.registerForm.get('rolId')?.value;
+    this.userNew.username = this.registerForm.get('username')?.value;
+    this.userNew.password = this.registerForm.get('password')?.value;
+    this.userNew.email = this.registerForm.get('email')?.value;
+    this.userNew.name = this.registerForm.get('name')?.value;
+    this.userNew.lastName = this.registerForm.get('last_name')?.value;
+    this.userNew.phone = this.registerForm.get('phone')?.value;
+    console.log( 'this.userNew ', this.userNew);
+    this.userService.registerUser(this.userNew, supplierType).subscribe({
+      next: (data: UserDTO) => {
+        this._snackBar.open('Usuario registrado exitosamente', 'Cerrar', {
+          duration: this.durationInSeconds * 1000,
+        });
+        this.resetForm();
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          this._snackBar.open(`${error.error.message}`, 'Cerrar', {
+            duration: this.durationInSeconds * 1000,
+          });
+        } else {
+          this._snackBar.open('Error al registrar el usuario', 'Cerrar', {
+            duration: this.durationInSeconds * 1000,
+          });
+        }
+      },
+    });
+  }
+
+  resetForm(){
+    this.registerForm.reset();
+    this.registerForm.get('nit')?.setValue('00000000');
+    this.registerForm.get('supplierType')?.setValue(SupplierType.getName(SupplierType.COMPANY));
+    this.registerForm.get('address')?.setValue('direccion`');
   }
 }

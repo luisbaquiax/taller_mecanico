@@ -19,9 +19,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/createUser")
-    public UserResponseDTO saveUser(@Valid @RequestBody UserDTO userDTO) {
-        return userService.saveUser(userDTO);
+    @PostMapping("/createUser/{typeSupplier}")
+    public UserResponseDTO saveUser(@Valid @RequestBody UserDTO userDTO, @PathVariable String typeSupplier) {
+        return userService.saveUser(userDTO, typeSupplier);
+    }
+
+    @PutMapping("/updateUser")
+    public UserResponseDTO updateUser(@Valid @RequestBody UserResponseDTO user) {
+        return userService.updateUser(user);
     }
 
     @PostMapping("/createClient")

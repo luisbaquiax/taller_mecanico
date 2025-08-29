@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RoleService } from '../../../services/Role.service';
 import { RoleDTO } from '../../../interfaces/RoleDTO';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list-users',
@@ -17,7 +18,6 @@ import { RoleDTO } from '../../../interfaces/RoleDTO';
   styleUrl: './list-users.css',
 })
 export class ListUsersComponent {
-
   displayedColumns: string[] = [
     'userId',
     'rolId',
@@ -30,9 +30,11 @@ export class ListUsersComponent {
     'actions',
   ];
 
+  durationSecond: number = 5000;
+
   dataSource: UserDTO[] = [];
   roles: RoleDTO[] = [];
-  constructor(private userService: UserService, private roleService: RoleService) {
+  constructor(private userService: UserService, private roleService: RoleService, private _snack: MatSnackBar) {
     this.setDataSource();
     this.setRoles();
   }
@@ -52,7 +54,32 @@ export class ListUsersComponent {
   }
 
   getRoleName(roleId: number): string {
-    const role = this.roles.find(r => r.rolId === roleId);
+    const role = this.roles.find((r) => r.rolId === roleId);
     return role ? role.nameRol : 'Desconocido';
+  }
+
+  updateUser(user: UserDTO): void {
+    if(confirm('¿Esta seguro de actualizar el usuario?')){
+      user.active = !user.active;
+      this.userService.updateUser(user).subscribe({
+      next: (data: UserDTO) => {
+        this.setDataSource();
+        this._snack.open('Usuario actualizado correctamente', 'Cerrar', {
+          duration: this.durationSecond,
+        });
+      },
+      error: (error) => {
+        this._snack.open('Error al actualizar el usuario', 'Cerrar', {
+          duration: this.durationSecond,
+        });
+      },
+    });
+    }
+  }
+
+  getUsersByIsActive(isActive: boolean): void {
+    this.userService.getUserByIsActive(isActive).subscribe((data: UserDTO[]) => {
+      this.dataSource = data;
+    });
   }
 }

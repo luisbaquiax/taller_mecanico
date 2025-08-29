@@ -2,6 +2,35 @@
   <div class="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold mb-4 text-center">Registrar usuario</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Rol -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="rolId">
+          <mat-option *ngFor="let role of roles" [value]="role.rolId" (click)="verifyRole()">
+            {{ role.nameRol }}
+          </mat-option>
+        </mat-select>
+        @if (registerForm.get('rolId')?.hasError('required')) {
+        <mat-error>El rol es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      @if(showTypeSupplier){
+      <!-- Tipo de proveedor -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Tipo de proveedor</mat-label>
+        <mat-select formControlName="supplierType">
+          <mat-option *ngFor="let supplierType of supplierTypes" [value]="supplierType">
+            {{ supplierType }}
+          </mat-option>
+        </mat-select>
+        @if (registerForm.get('supplierType')?.hasError('required')) {
+        <mat-error>El tipo de proveedor es obligatorio</mat-error>
+        }
+      </mat-form-field>
+      }
+
       <!-- Nombre de usuario -->
       <mat-form-field floatLabel="always" class="w-full mb-4">
         <mat-label>Nombre de usuario</mat-label>
@@ -71,6 +100,7 @@
         }
       </mat-form-field>
 
+      @if(shwoInputNit){
       <!-- NIT -->
       <mat-form-field floatLabel="always" class="w-full mb-4">
         <mat-label>NIT</mat-label>
@@ -88,19 +118,7 @@
         <mat-error>La dirección es obligatoria</mat-error>
         }
       </mat-form-field>
-
-      <!-- Rol -->
-      <mat-form-field floatLabel="always" class="w-full mb-4">
-        <mat-label>Rol</mat-label>
-        <mat-select formControlName="rolId">
-          <mat-option *ngFor="let role of roles" [value]="role.rolId">
-            {{ role.nameRol }}
-          </mat-option>
-        </mat-select>
-        @if (registerForm.get('rolId')?.hasError('required')) {
-        <mat-error>El rol es obligatorio</mat-error>
-        }
-      </mat-form-field>
+      }
 
       <!-- Botón registrar -->
       <button matButton="filled" class="w-full mt-4 !rounded-none" type="submit">
