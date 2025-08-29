@@ -21,6 +21,10 @@ public class Vehicle {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    //licence_plate VARCHAR(200) NOT NULL UNIQUE,
+    @Column(name = "licence_plate", nullable = false, unique = true, length = 200)
+    private String licencePlate;
+
     @Column(name = "brand", nullable = false, length = 100)
     private String brand;
 
