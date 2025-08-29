@@ -11,7 +11,7 @@ public class UserResponseDTO {
     private Long userId;
     private Long rolId;
     private String username;
-    private boolean isActive;
+    private boolean active;
     private String email;
     private String phone;
     private String name;

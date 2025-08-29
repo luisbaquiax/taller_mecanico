@@ -5,7 +5,10 @@ import org.ayd.apimecahnicalworkshop.dto.userdto.UserDTO;
 import org.ayd.apimecahnicalworkshop.dto.userdto.UserLoginDTO;
 import org.ayd.apimecahnicalworkshop.dto.userdto.UserResponseDTO;
 import org.ayd.apimecahnicalworkshop.entities.Client;
+import org.ayd.apimecahnicalworkshop.entities.Supplier;
 import org.ayd.apimecahnicalworkshop.entities.User;
+import org.ayd.apimecahnicalworkshop.repositories.ClientRepository;
+import org.ayd.apimecahnicalworkshop.repositories.SupplierRepository;
 import org.ayd.apimecahnicalworkshop.repositories.UserRepository;
 import org.ayd.apimecahnicalworkshop.utils.Encriptation;
 import org.ayd.apimecahnicalworkshop.utils.ErrorApi;
@@ -23,6 +26,10 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
 
     private Encriptation encriptation;
     public UserService() {
@@ -34,13 +41,14 @@ public class UserService {
      * @param user - UserDTO
      * @return UserResponseDTO
      */
-    public UserResponseDTO saveUser(UserDTO user) {
+    public UserResponseDTO saveUser(UserDTO user, String typeSupplier) {
         if (repository.existsByUsername(user.getUsername())) {
             throw new ErrorApi(409, "El nombre de usuario ya existe");
         }
         if (repository.findByEmail(user.getEmail()) != null) {
             throw new ErrorApi(409, "El correo electrónico ya existe");
         }
+
         User saveUser = new User();
         saveUser.setRolId(user.getRolId());
         setUser(saveUser,
@@ -50,6 +58,13 @@ public class UserService {
                 user.getPhone(),
                 user.getName(),
                 user.getLastName());
+
+        if(user.getRolId().equals(Roles.SUPPLIER.getId())){
+            Supplier supplier = new Supplier();
+            supplier.setUserId(saveUser.getUserId());
+            supplier.setTypeSupplier(typeSupplier);
+            supplierRepository.save(supplier);
+        }
 
         return  new UserResponseDTO(
                 saveUser.getUserId(),
@@ -67,8 +82,8 @@ public class UserService {
 
     /**
      * Register a new client
-     * @param user
-     * @return
+     * @param user - RegisterClientDTO
+     * @return UserResponseDTO
      */
     public UserResponseDTO registerClient(RegisterClientDTO user) {
         if (repository.existsByUsername(user.getUsername())) {
@@ -92,6 +107,7 @@ public class UserService {
         client.setUserId(saveUser.getUserId());
         client.setNit(user.getNit());
         client.setAddress(user.getAddress());
+        clientRepository.save(client);
 
         return new UserResponseDTO(
                 saveUser.getUserId(),
@@ -145,6 +161,15 @@ public class UserService {
     }
 
     /**
+     * Update user
+     * @param user
+     * @return
+     */
+    public UserResponseDTO updateUser(UserResponseDTO user) {
+        return mapToDTO(repository.save(mapToEntity(user)));
+    }
+
+    /**
      * User login
      * @param userLogin - UserLoginDTO
      * @return UserResponseDTO
@@ -176,7 +201,7 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getUsersByActive(boolean active) {
-        List<User> users = repository.getUserByActive(active);
+        List<User> users = (List<User>) repository.getUserByIsActive(active);
         return users.stream().map(user -> new UserResponseDTO(
                 user.getUserId(),
                 user.getRolId(),
@@ -190,5 +215,45 @@ public class UserService {
                 user.getTypeTwoFactorId()
         )).collect(Collectors.toList());
     }
+
+    /**
+     *
+     * @param user - User
+     * @return - UserResponseDTO
+     */
+    private UserResponseDTO mapToDTO(User user) {
+        return new UserResponseDTO(
+                user.getUserId(),
+                user.getRolId(),
+                user.getUsername(),
+                user.isActive(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getName(),
+                user.getName(),
+                user.isTwoFactorAuth(),
+                user.getTypeTwoFactorId()
+        );
+    }
+
+    /**
+     * Map UserResponseDTO to User
+     * @param user - UserResponseDTO
+     * @return User
+     */
+    private User mapToEntity(UserResponseDTO user) {
+        User aux = repository.findById(user.getUserId()).get();
+        aux.setRolId(user.getRolId());
+        aux.setUsername(user.getUsername());
+        aux.setActive(user.isActive());
+        aux.setEmail(user.getEmail());
+        aux.setPhone(user.getPhone());
+        aux.setName(user.getName());
+        aux.setLastName(user.getLastName());
+        aux.setTwoFactorAuth(user.isTwoFactorAuth());
+        aux.setTypeTwoFactorId(user.getTypeTwoFactorId());
+        return aux;
+    }
+
 
 }

@@ -2,7 +2,7 @@ export interface UserDTO {
   userId: number;
   rolId: number;
   username: string;
-  isActive: boolean;
+  active: boolean;
   email: string;
   phone: string;
   name: string;
