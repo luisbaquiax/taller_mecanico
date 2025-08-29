@@ -54,7 +54,8 @@ CREATE TABLE clients(
 
 CREATE TABLE vehicles(
     vehicle_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    client_id INT NOT NULL,
+    client_id INT,
+    licence_plate VARCHAR(200) NOT NULL UNIQUE,
     brand VARCHAR(100) NOT NULL,
     model VARCHAR(100) NOT NULL,
     year VARCHAR(4) NOT NULL,

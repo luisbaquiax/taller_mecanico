@@ -52,7 +52,7 @@ export class Login {
           // Aquí puedes manejar la respuesta del servicio, por ejemplo, guardar el token y redirigir al usuario
           switch (data.rolId) {
             case 1:
-              this.router.navigate(['/admin-nav']);
+              this.router.navigate(['/admin']);
               break;
             case 2:
               //this.router.navigate(['/employee-nav']);

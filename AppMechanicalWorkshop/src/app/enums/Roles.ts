@@ -3,6 +3,7 @@ export enum Roles {
   EMPLOYEE = 2,
   ESPECIALIST = 3,
   CLIENT = 4,
+  SUPPLIER = 5
 }
 
 export namespace Roles {

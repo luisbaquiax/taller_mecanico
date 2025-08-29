@@ -22,8 +22,4 @@ public class Supplier {
     @Column(name = "type_supplier", nullable = false, length = 10)
     private String typeSupplier; // person o company
 
-    private String createdAt;
-    private String updatedAt;
-
-
 }

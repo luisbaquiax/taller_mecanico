@@ -1,0 +1,100 @@
+<div class="p-4">
+  <h2 class="text-2xl font-bold text-center bg">Lista de Usuarios</h2>
+  <div class="row">
+    <div class="col-2">
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getUsersByIsActive(true)"
+      >
+        TODOS
+      </button>
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getUsersByIsActive(true)"
+      >
+        ACTIVOS
+      </button>
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getUsersByIsActive(false)"
+      >
+        DESACTIVADOS
+      </button>
+      <!--
+      <mat-form-field>
+              <mat-label>Buscar</mat-label>
+              <input matInput placeholder="Buscar" #input />
+            </mat-form-field>
+      -->
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Position Column -->
+    <ng-container matColumnDef="userId">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="rolId">
+      <th mat-header-cell *matHeaderCellDef>Rol</th>
+      <td mat-cell *matCellDef="let element">{{ getRoleName(element.rolId) }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef>Apellidos</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>Nombre de usuario</th>
+      <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Correo</th>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+      <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="isActive">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.active === true ? 'Activo' : 'Desactivado' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton title="Editar"><mat-icon>edit</mat-icon></button>
+        <button
+          matIconButton
+          (click)="updateUser(element)"
+          title="{{ element.active === true ? 'Desactivar' : 'Activar' }}"
+        >
+          <mat-icon>{{
+            element.active === true ? 'do_not_disturb_off' : 'data_saver_on'
+          }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
