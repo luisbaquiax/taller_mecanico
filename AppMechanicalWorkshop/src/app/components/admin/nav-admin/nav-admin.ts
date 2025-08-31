@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './nav-admin.css',
 })
 export class NavAdmin {
+  openParts: boolean = false;
 
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
 

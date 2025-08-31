@@ -6,6 +6,9 @@ import { RegisterClientComponent } from './components/admin/register-client/regi
 import { RegisterUser } from './components/admin/register-user/register-user';
 import { ListUsersComponent } from './components/admin/list-users/list-users';
 import { RegisterVehicleComponent } from './components/admin/register-vehicle/register-vehicle';
+import { RegisterPartComponenet } from './components/admin/register-part/register-part';
+import { AddInventoryComponent } from './components/admin/add-inventory/add-inventory';
+import { ListPartsComponent } from './components/admin/list-parts/list-parts';
 
 export const routes: Routes = [
   {
@@ -31,7 +34,22 @@ export const routes: Routes = [
         path: 'register-vehicle',
         component: RegisterVehicleComponent,
         title: 'Register Vehicle',
-      }
+      },
+      {
+        path: 'list-parts',
+        component: ListPartsComponent,
+        title: 'List Parts',
+      },
+      {
+        path: 'register-part',
+        component: RegisterPartComponenet,
+        title: 'Register Part',
+      },
+      {
+        path: 'add-inventory',
+        component: AddInventoryComponent,
+        title: 'Add Inventory',
+      },
     ],
   },
   {
