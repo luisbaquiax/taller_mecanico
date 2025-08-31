@@ -4,10 +4,7 @@ import org.ayd.apimecahnicalworkshop.dto.vehicledto.VehicleDTO;
 import org.ayd.apimecahnicalworkshop.entities.Vehicle;
 import org.ayd.apimecahnicalworkshop.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,10 @@ public class VehicleController {
     @PostMapping("/saveVehicle")
     public VehicleDTO createVehicle(VehicleDTO vehicle) {
         return service.save(vehicle);
+    }
+
+    @GetMapping("/getByLicencePlate/{licencePlate}")
+    public VehicleDTO getByLicencePlate(@PathVariable String licencePlate) {
+        return service.getByLicencePlate(licencePlate);
     }
 }
