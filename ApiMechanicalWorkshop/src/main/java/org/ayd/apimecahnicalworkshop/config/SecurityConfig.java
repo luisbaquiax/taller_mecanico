@@ -15,6 +15,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll() // endpoint abierto
+                        .requestMatchers("/employee/**").hasRole("EMPLOYEE")
                         .anyRequest().authenticated()               // resto requiere autenticación
                 )
                 .httpBasic(httpBasic -> {});
