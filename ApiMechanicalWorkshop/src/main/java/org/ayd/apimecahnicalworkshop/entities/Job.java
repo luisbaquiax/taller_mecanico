@@ -14,13 +14,11 @@ public class Job {
     @Column(name = "job_id", nullable = false)
     private Long jobId;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
+    @Column(name = "vehicle_id")
+    private Long vehicleId;
 
     @Column(name = "started_at")
     private String startedAt;
@@ -28,13 +26,11 @@ public class Job {
     @Column(name = "finished_at")
     private String finishedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "type_job_id")
-    private TypeJob typeJob;
+    @Column(name = "type_job_id")
+    private Long typeJobId;
 
-    @ManyToOne
-    @JoinColumn(name = "status_job_id")
-    private StatusJob statusJob;
+    @Column(name = "status_job_id")
+    private Long statusJobId;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -47,4 +43,21 @@ public class Job {
 
     @Column(name = "updated_at", nullable = false)
     private String updatedAt;
+
+    // Lazy for all object
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", insertable = false, updatable = false)
+    private User createdByUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id", insertable = false, updatable = false)
+    private Vehicle vehicle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_job_id", insertable = false, updatable = false)
+    private TypeJob typeJob;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_job_id", insertable = false, updatable = false)
+    private StatusJob statusJob;
 }
