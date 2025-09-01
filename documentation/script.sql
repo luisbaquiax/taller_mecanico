@@ -120,21 +120,16 @@ CREATE TABLE type_jobs(
 );
 
 -- status-jobs
--- Insert job statuses
-INSERT INTO status_jobs (name_status_job, description_status_job) VALUES
-('pendiente', 'Trabajo programado pero no iniciado'),
-('evaluacion', 'Trabajo en revisión antes de ejecución'),
-('autorizado', 'Trabajo aprobado para ejecución'),
-('en_curso', 'Trabajo en ejecución'),
-('pausado', 'Trabajo detenido temporalmente'),
-('finalizado', 'Trabajo finalizado con éxito'),
-('cancelado', 'Trabajo cancelado antes de finalizar'),
-('finalizado_sin_ejecucion', 'Trabajo finalizado sin haber sido ejecutado');
+CREATE TABLE status_jobs(
+    status_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_status_job VARCHAR(100) NOT NULL,
+    description_status_job VARCHAR(200) NOT NULL
+);
 
 -- jobs
 CREATE TABLE jobs(
     job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    created_by INT NOT NULL,
+    created_by INT,
     vehicle_id INT NOT NULL,
     started_at DATETIME NULL,
     finished_at DATETIME NULL,
@@ -254,34 +249,76 @@ CREATE TABLE quotation_items(
     FOREIGN KEY (quotation_id) REFERENCES quotations(quotation_id)
 );
 
+-- status quotes
+-- pendiente, confirmada, rechazada, expirada
+CREATE TABLE status_quotes(
+    status_quote_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_status_quote VARCHAR(100) NOT NULL,
+    description_status_quote VARCHAR(200) NOT NULL
+);
 
-    SELECT
-        j.job_id as jobId,
-        v.licence_plate as licencePlate,
-        v.brand as vehicleBrand,
-        v.model as vehicleModel,
-        v.year as vehicleYear,
-        p.name_part as partName,
-        p.brand_part as partBrand,
-        jp.quantity as quantity,
-        jp.price as price,
-        jp.created_at as createdAt,
-        j.description as jobDescription
-    FROM
-        jobs j
-    INNER JOIN
-        vehicles v
-            ON j.vehicle_id = v.vehicle_id
-    INNER JOIN
-        clients c
-            ON v.client_id = c.client_id
-    INNER JOIN
-        jobs_parts jp
-            ON j.job_id = jp.job_id
-    INNER JOIN
-        parts p
-            ON jp.part_id = p.part_id
-    WHERE
-        c.user_id = 4
-    ORDER BY
-        jp.created_at DESC
+-- quotes
+CREATE TABLE quotes (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  supplier_id INT NOT NULL,
+  status_quote_id INT NOT NULL,
+  requested_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  valid_until DATETIME NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),
+  FOREIGN KEY (status_quote_id) REFERENCES status_quotes(status_quote_id)
+);
+
+CREATE TABLE quote_items (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  quote_id INT NOT NULL,
+  part_id INT NULL,
+  description VARCHAR(255), -- para piezas que aún no existen en catálogo
+  quantity INT NOT NULL,
+  unit_price DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (quote_id) REFERENCES quotes(id),
+  FOREIGN KEY (part_id) REFERENCES parts(part_id)
+);
+
+-- status orders
+-- accepted  aceptado
+-- rejected  rechazado
+-- shipped  enviado
+-- delivered  entregado
+-- delayed  retrasado
+-- cancelled  cancelado
+CREATE TABLE status_orders(
+    status_order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name_status_order VARCHAR(100) NOT NULL,
+    description_status_order VARCHAR(200) NOT NULL
+);
+
+-- orders
+CREATE TABLE orders (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  supplier_id INT,
+  quote_id INT, -- opcional: si el pedido proviene de una cotización
+  status_order_id INT NOT NULL,
+  order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  expected_delivery DATE NULL,
+  delivered_at DATETIME NULL,
+  notes TEXT,-- notas adicionales
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id),
+  FOREIGN KEY (quote_id) REFERENCES quotes(id),
+  FOREIGN KEY (status_order_id) REFERENCES status_orders(status_order_id)
+);
+
+-- order items
+CREATE TABLE order_items (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  part_id INT NULL,
+  description VARCHAR(255),
+  quantity INT NOT NULL,
+  unit_price DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (part_id) REFERENCES parts(part_id)
+);
