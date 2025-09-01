@@ -1,0 +1,27 @@
+/* Reutilizamos los estilos existentes de TailwindCSS y Angular Material */
+/* Los estilos principales ya están definidos en las clases de Tailwind */
+
+/* Efectos hover adicionales */
+.mat-sidenav-content {
+  overflow-x: hidden;
+}
+
+/* Personalización para el sidebar del empleado */
+.bg-gray-900 {
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+}
+
+/* Indicador de ruta activa más visible */
+.bg-gray-800 {
+  background: linear-gradient(90deg, #374151 0%, #4b5563 100%);
+  border-left: 4px solid #3b82f6;
+}
+
+/* Animación suave para los elementos del menú */
+a, button {
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover, button:hover {
+  transform: translateX(2px);
+}

@@ -1,0 +1,200 @@
+<div class="p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="goBack()" class="mr-2">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Trabajos Activos</h2>
+        <p class="text-gray-600">Trabajos pendientes y en progreso</p>
+      </div>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="refreshActiveJobs()"
+      [disabled]="isLoading()"
+    >
+      <mat-icon class="mr-2">refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <!-- Resumen -->
+  <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Total Activos -->
+    <mat-card class="bg-blue-50 border-l-4 border-blue-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center">
+          <mat-icon class="text-blue-600 mr-3 text-3xl">work</mat-icon>
+          <div>
+            <p class="text-sm font-medium text-blue-600">Total Activos</p>
+            <p class="text-2xl font-bold text-blue-800">{{ activeJobs().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Pendientes -->
+    <mat-card class="bg-orange-50 border-l-4 border-orange-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center">
+          <mat-icon class="text-orange-600 mr-3 text-3xl">schedule</mat-icon>
+          <div>
+            <p class="text-sm font-medium text-orange-600">Pendientes</p>
+            <p class="text-2xl font-bold text-orange-800">{{ pendingJobs().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- En Progreso -->
+    <mat-card class="bg-green-50 border-l-4 border-green-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center">
+          <mat-icon class="text-green-600 mr-3 text-3xl">build</mat-icon>
+          <div>
+            <p class="text-sm font-medium text-green-600">En Progreso</p>
+            <p class="text-2xl font-bold text-green-800">{{ inProgressJobs().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-12">
+    <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="flex items-center">
+      <mat-icon class="mr-2">error</mat-icon>
+      <span>{{ error() }}</span>
+    </div>
+    <button mat-raised-button color="primary" (click)="refreshActiveJobs()" class="mt-2">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Lista de Trabajos Activos -->
+  <div *ngIf="!isLoading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <mat-card
+      *ngFor="let job of activeJobs()"
+      class="hover:shadow-lg transition-shadow duration-200"
+      [ngClass]="{
+        'border-l-4 border-orange-500': job.estadoTrabajo === 'Pendiente',
+        'border-l-4 border-green-500': job.estadoTrabajo === 'En progreso'
+      }"
+    >
+      <mat-card-header class="pb-2">
+        <div class="flex justify-between items-center w-full">
+          <div>
+            <mat-card-title class="text-lg">
+              {{ job.placaVehiculo }} - {{ job.marcaVehiculo }} {{ job.modeloVehiculo }}
+            </mat-card-title>
+            <mat-card-subtitle>
+              Cliente: {{ job.clienteNombre }}
+            </mat-card-subtitle>
+          </div>
+          <mat-chip-set>
+            <mat-chip [color]="getChipColor(job.estadoTrabajo)" selected>
+              <mat-icon matChipAvatar>{{ getChipIcon(job.estadoTrabajo) }}</mat-icon>
+              {{ job.estadoTrabajo }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="pb-2">
+        <div class="space-y-2">
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">build</mat-icon>
+            <span class="text-sm">{{ job.tipoMantenimiento }}</span>
+          </div>
+
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">schedule</mat-icon>
+            <span class="text-sm">{{ job.horasEstimadas || 0 }} horas estimadas</span>
+          </div>
+
+          <!-- Mostrar tiempo transcurrido solo si está en progreso -->
+          <div *ngIf="job.estadoTrabajo === 'En progreso'" class="flex items-center">
+            <mat-icon class="text-green-500 mr-2 text-sm">access_time</mat-icon>
+            <span class="text-sm font-medium text-green-700">
+              Tiempo transcurrido: {{ getTiempoTranscurrido(job.fechaInicio!) }}
+            </span>
+          </div>
+
+          <!-- Fecha de asignación o inicio -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">today</mat-icon>
+            <span class="text-sm">
+              <span *ngIf="job.estadoTrabajo === 'Pendiente'">Asignado: {{ job.fechaAsignacion | date:'short' }}</span>
+              <span *ngIf="job.estadoTrabajo === 'En progreso'">Iniciado: {{ job.fechaInicio | date:'short' }}</span>
+            </span>
+          </div>
+
+          <p class="text-gray-700 text-sm mt-2 line-clamp-2">
+            {{ job.descripcion }}
+          </p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="flex justify-between items-center pt-2">
+        <div class="flex space-x-2">
+          <button
+            mat-raised-button
+            color="primary"
+            size="small"
+            (click)="verDetalles(job)"
+          >
+            <mat-icon class="mr-1">visibility</mat-icon>
+            Ver Detalles
+          </button>
+        </div>
+
+        <div class="flex space-x-2">
+          <!-- Botón Iniciar (solo para trabajos pendientes) -->
+          <button
+            *ngIf="job.estadoTrabajo === 'Pendiente'"
+            mat-raised-button
+            color="primary"
+            size="small"
+            (click)="iniciarTrabajo(job)"
+          >
+            <mat-icon class="mr-1">play_arrow</mat-icon>
+            Iniciar
+          </button>
+
+          <!-- Botón Finalizar (solo para trabajos en progreso) -->
+          <button
+            *ngIf="job.estadoTrabajo === 'En progreso'"
+            mat-raised-button
+            color="accent"
+            size="small"
+            (click)="finalizarTrabajo(job)"
+          >
+            <mat-icon class="mr-1">check</mat-icon>
+            Finalizar
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading() && !error() && activeJobs().length === 0" class="text-center py-12">
+    <mat-icon class="text-gray-400 text-6xl mb-4">work_off</mat-icon>
+    <h3 class="text-xl font-medium text-gray-700 mb-2">No tienes trabajos activos</h3>
+    <p class="text-gray-500 mb-4">Todos tus trabajos están completados.</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon class="mr-2">assignment</mat-icon>
+      Ver Todos los Trabajos
+    </button>
+  </div>
+
+</div>
