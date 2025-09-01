@@ -25,10 +25,10 @@ public class JobAssigment {
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
-
-    @Column(name = "assigned_at", nullable = false)
-    private String assignedAt;
-
-    @Column(name = "unassigned_at")
-    private String unassignedAt;
+//
+//    @Column(name = "assigned_at", nullable = false)
+//    private String assignedAt;
+//
+//    @Column(name = "unassigned_at")
+//    private String unassignedAt;
 }

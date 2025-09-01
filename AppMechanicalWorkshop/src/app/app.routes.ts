@@ -9,6 +9,14 @@ import { RegisterVehicleComponent } from './components/admin/register-vehicle/re
 import { RegisterPartComponenet } from './components/admin/register-part/register-part';
 import { AddInventoryComponent } from './components/admin/add-inventory/add-inventory';
 import { ListPartsComponent } from './components/admin/list-parts/list-parts';
+import { ListServicesComponent } from './components/admin/list-services/list-services';
+import { ListJobsComponent } from './components/admin/list-jobs/list-jobs';
+import { DetailJobComponent } from './components/admin/list-jobs/detail-jobs/detail-job';
+import { AssigmentsJobComponent } from './components/admin/list-jobs/detail-jobs/assigments-job/assigments-job';
+import { InvoicesJobComponent } from './components/admin/list-jobs/detail-jobs/invoices-job/invoices-job';
+import { ServicesJobComponent } from './components/admin/list-jobs/detail-jobs/services-job/services-job';
+import { PartsJobComponent } from './components/admin/list-jobs/detail-jobs/parts-job/parts-job';
+import { UpdateJobsComponent } from './components/admin/list-jobs/detail-jobs/update-jobs/update-jobs';
 
 export const routes: Routes = [
   {
@@ -41,6 +49,11 @@ export const routes: Routes = [
         title: 'List Parts',
       },
       {
+        path: 'list-services',
+        component: ListServicesComponent,
+        title: 'List Services',
+      },
+      {
         path: 'register-part',
         component: RegisterPartComponenet,
         title: 'Register Part',
@@ -50,6 +63,44 @@ export const routes: Routes = [
         component: AddInventoryComponent,
         title: 'Add Inventory',
       },
+      {
+        path: 'list-jobs',
+        component: ListJobsComponent,
+        title: 'List Jobs',
+      },
+      {
+        path: 'detail-job/:id',
+        component: DetailJobComponent,
+        title: 'Detail Job',
+        children: [
+          {
+            path: 'assigments-job',
+            component: AssigmentsJobComponent,
+            title: 'Assigments Job',
+          },
+          {
+            path: 'invoices-job',
+            component: InvoicesJobComponent,
+            title: 'Invoices Job',
+          },
+          {
+            path: 'services-job',
+            component: ServicesJobComponent,
+            title: 'Services Job',
+          },
+          {
+            path: 'parts-job',
+            component: PartsJobComponent,
+            title: 'Parts Job',
+          },
+          {
+            path: 'update-job',
+            component: UpdateJobsComponent,
+            title: 'Update Job',
+          },
+        ]
+      },
+
     ],
   },
   {

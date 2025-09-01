@@ -15,7 +15,13 @@ public class ServicesTypes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_type_id", nullable = false)
     private Long serviceTypeId;
+
+    @Column(name = "name_service_type", nullable = false)
     private String nameServiceType;
+
+    @Column(name = "description_service_type", nullable = false)
     private String descriptionServiceType;
+
+    @Column(name = "base_price", nullable = false)
     private Double basePrice;
 }

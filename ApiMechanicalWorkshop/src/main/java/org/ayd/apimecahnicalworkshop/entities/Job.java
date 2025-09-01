@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "status_jobs")
+@Table(name = "jobs")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Job {
     @Id
@@ -38,9 +38,4 @@ public class Job {
     @Column(name = "estimated_hours", columnDefinition = "DECIMAL(6,2) DEFAULT 0.00")
     private Double estimatedHours;
 
-    @Column(name = "created_at", nullable = false)
-    private String createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private String updatedAt;
 }

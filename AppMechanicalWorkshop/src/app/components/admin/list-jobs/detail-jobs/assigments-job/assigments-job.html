@@ -1,0 +1,11 @@
+<mat-list>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Empleados asgignados</div>
+  @for (element of jobAssigments; track $index) {
+  <mat-list-item>
+    <mat-icon matListItemIcon>Empleado</mat-icon>
+    <div matListItemTitle>Nombre: {{ searchUser(element.userId).name }}</div>
+    <div matListItemLine>Apellido: {{ searchUser(element.userId).lastName }}</div>
+  </mat-list-item>
+  }
+</mat-list>

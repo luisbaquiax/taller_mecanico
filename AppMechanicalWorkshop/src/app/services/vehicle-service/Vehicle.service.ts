@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { VehicleDTO } from '../../interfaces/VehicleDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VehicleService {
-
   private apiUrl: string = 'http://localhost:8081/vehicles';
 
-  constructor(private htt: HttpClient) { }
+  constructor(private htt: HttpClient) {}
 
   /**
    * Get all vehicles
@@ -27,5 +26,4 @@ export class VehicleService {
   public saveVehicle(vehicle: VehicleDTO): Observable<VehicleDTO> {
     return this.htt.post<VehicleDTO>(`${this.apiUrl}/saveVehicle`, vehicle);
   }
-
 }

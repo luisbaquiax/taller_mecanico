@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatFormField } from '@angular/material/form-field';
@@ -48,7 +48,7 @@ import { SupplierDTO } from '../../../interfaces/SupplierDTO';
   templateUrl: './register-part.html',
   styleUrl: './register-part.css',
 })
-export class RegisterPartComponenet {
+export class RegisterPartComponenet implements OnInit {
   registerForm: FormGroup;
 
   supplieres: SupplierDTO[] = [];
@@ -84,8 +84,11 @@ export class RegisterPartComponenet {
       stockPart: ['', [Validators.required, Validators.min(0)]],
     });
 
-    this.setSupplies();
-    this.setUser();
+  }
+
+  ngOnInit() {
+      this.setSupplies();
+      this.setUser();
   }
 
   onSubmit() {

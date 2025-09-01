@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { PartDTO } from '../interfaces/PartDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PartService {
-
   private url = 'http://localhost:8081/parts';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   public getParts(): Observable<PartDTO[]> {
     return this.http.get<PartDTO[]>(`${this.url}/all`);
   }

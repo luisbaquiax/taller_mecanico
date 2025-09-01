@@ -15,6 +15,4 @@ public class VehicleDTO {
     private String model;
     private String year;
     private String color;
-    private String createdAt;
-    private String updatedAt;
 }

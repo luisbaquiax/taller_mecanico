@@ -49,18 +49,23 @@ public class VehicleService {
      */
     public VehicleDTO save(VehicleDTO vehicle) {
         Vehicle vehicleSaved = repository.getByLicencePlate(vehicle.getLicencePlate());
+        //if vehicle is null, create a new vehicle
         if(vehicleSaved == null) {
             vehicleSaved = new Vehicle();
+            vehicleSaved.setVehicleId(null);
+            vehicleSaved.setLicencePlate(vehicle.getLicencePlate());
             vehicleSaved.setBrand(vehicle.getBrand());
             vehicleSaved.setModel(vehicle.getModel());
             vehicleSaved.setColor(vehicle.getColor());
             vehicleSaved.setYear(vehicle.getYear());
+            Client aux = clientRepository.findClientByClientId(vehicle.getClientId());
+            if(aux == null) {
+                throw new ErrorApi(404, "Cliente no encontrado.");
+            }
+            vehicleSaved.setClient(aux);
+            return mapToDTO(repository.save(vehicleSaved));
         }
-
-        Client aux = clientRepository.findById(vehicle.getClientId()).orElse(null);
-        vehicleSaved.setClient(aux);
-
-        return mapToDTO(repository.save(vehicleSaved));
+        return mapToDTO(vehicleSaved);
     }
 
     public VehicleDTO getByLicencePlate(String licencePlate) {
@@ -93,9 +98,7 @@ public class VehicleService {
                 save.getBrand(),
                 save.getModel(),
                 save.getYear(),
-                save.getColor(),
-                save.getCreatedAt() != null ? save.getCreatedAt().toString() : null,
-                save.getUpdatedAt() != null ? save.getUpdatedAt().toString() : null
+                save.getColor()
         );
     }
 

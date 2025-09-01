@@ -46,12 +46,20 @@
           Gestión de servicios y mantenimientos
         </h3>
         <a
-          routerLink="/jobs"
+          routerLink="jobs"
           routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
           <mat-icon class="mr-2">build</mat-icon>
           Tipos de mantenimiento
+        </a>
+        <a
+          routerLink="list-services"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">home_repair_service</mat-icon>
+          Servicios
         </a>
         <a
           routerLink="/assignment"
@@ -120,8 +128,8 @@
           Supervisión de operaciones
         </h3>
         <a
-          routerLink="/operations"
-          routerLinkActive="bg-gray-800"
+          routerLink="list-jobs"
+          routerLinkActive="bg-gray-800 text-white"
           class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
         >
           <mat-icon class="mr-2">visibility</mat-icon>
@@ -155,7 +163,7 @@
 
   <!-- Contenido -->
   <mat-sidenav-content class="p-6 bg-gray-100">
-    <h1 class="text-xl font-bold ml-4">Taller Central</h1>
+    <h1 class="text-xl font-bold ml-4">Taller Central - Módulo Administrador</h1>
     <button mat-icon-button (click)="toggleSidenav()" class="md:hidden">
       <mat-icon>menu</mat-icon>
     </button>
