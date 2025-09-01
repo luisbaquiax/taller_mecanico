@@ -27,7 +27,9 @@
 
       <!-- Gestión de vehiculos -->
       <div>
-        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Gestión de vehiculos</h3>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+          Gestión de vehiculos
+        </h3>
         <a
           routerLink="register-vehicle"
           routerLinkActive="bg-gray-800 text-white"
@@ -40,7 +42,7 @@
 
       <!-- Gestión de servicios -->
       <div>
-        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400 hover:text-white">
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
           Gestión de servicios y mantenimientos
         </h3>
         <a
@@ -67,6 +69,49 @@
           <mat-icon class="mr-2">check_circle</mat-icon>
           Aprobar / Rechazar solicitudes
         </a>
+      </div>
+
+      <!-- Inventario de repuestos -->
+      <div>
+        <button
+          (click)="openParts = !openParts"
+          class="px-3 py-2 text-sm font-semibold uppercase text-gray-400"
+        >
+          <span class="flex-1 text-left whitespace-nowrap">Gestión de repuestos</span>
+          <mat-icon  class="transition-transform {{ openParts ? 'rotate-90' : '' }}"
+            >chevron_right</mat-icon
+          >
+        </button>
+
+        <!-- Submenu -->
+        @if (openParts) {
+        <div class="ml-4 mt-1 space-y-1">
+          <a
+            routerLink="list-parts"
+            routerLinkActive="bg-gray-800 text-white"
+            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          >
+            <mat-icon class="mr-2">inventory</mat-icon>
+            Inventario de repuestos
+          </a>
+          <a
+            routerLink="register-part"
+            routerLinkActive="bg-gray-800 text-white"
+            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          >
+            <mat-icon class="mr-2">extension</mat-icon>
+            Registrar repuestos
+          </a>
+          <a
+            routerLink="add-inventory"
+            routerLinkActive="bg-gray-800 text-white"
+            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          >
+            <mat-icon class="mr-2">add_box</mat-icon>
+            Agregar repuesto a Inventario
+          </a>
+        </div>
+        }
       </div>
 
       <!-- Supervisión de operaciones -->
@@ -104,7 +149,6 @@
           <mat-icon class="mr-2">logout</mat-icon>
           Cerrar sesión
         </button>
-
       </div>
     </nav>
   </mat-sidenav>

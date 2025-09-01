@@ -14,7 +14,6 @@ import org.ayd.apimecahnicalworkshop.utils.Encriptation;
 import org.ayd.apimecahnicalworkshop.utils.ErrorApi;
 import org.ayd.apimecahnicalworkshop.utils.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -104,7 +103,7 @@ public class UserService {
                 );
 
         Client client = new Client();
-        client.setUserId(saveUser.getUserId());
+        client.setUser(saveUser);
         client.setNit(user.getNit());
         client.setAddress(user.getAddress());
         clientRepository.save(client);
@@ -162,8 +161,8 @@ public class UserService {
 
     /**
      * Update user
-     * @param user
-     * @return
+     * @param user - user
+     * @return UserResponseDTO
      */
     public UserResponseDTO updateUser(UserResponseDTO user) {
         return mapToDTO(repository.save(mapToEntity(user)));
@@ -201,7 +200,7 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getUsersByActive(boolean active) {
-        List<User> users = (List<User>) repository.getUserByIsActive(active);
+        List<User> users = repository.getUserByIsActive(active);
         return users.stream().map(user -> new UserResponseDTO(
                 user.getUserId(),
                 user.getRolId(),

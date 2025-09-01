@@ -17,6 +17,7 @@ public class VehicleService {
 
     @Autowired
     private VehicleRepository repository;
+    @Autowired
     private ClientRepository clientRepository;
 
     /**
@@ -47,16 +48,27 @@ public class VehicleService {
      * @return Saved vehicle
      */
     public VehicleDTO save(VehicleDTO vehicle) {
-        Vehicle vehicleSaved = new Vehicle();
-        vehicleSaved.setBrand(vehicle.getBrand());
-        vehicleSaved.setModel(vehicle.getModel());
-        vehicleSaved.setColor(vehicle.getColor());
-        vehicleSaved.setYear(vehicle.getYear());
+        Vehicle vehicleSaved = repository.getByLicencePlate(vehicle.getLicencePlate());
+        if(vehicleSaved == null) {
+            vehicleSaved = new Vehicle();
+            vehicleSaved.setBrand(vehicle.getBrand());
+            vehicleSaved.setModel(vehicle.getModel());
+            vehicleSaved.setColor(vehicle.getColor());
+            vehicleSaved.setYear(vehicle.getYear());
+        }
 
         Client aux = clientRepository.findById(vehicle.getClientId()).orElse(null);
         vehicleSaved.setClient(aux);
 
         return mapToDTO(repository.save(vehicleSaved));
+    }
+
+    public VehicleDTO getByLicencePlate(String licencePlate) {
+        Vehicle vehicle = repository.getByLicencePlate(licencePlate);
+        if(vehicle == null) {
+            throw new ErrorApi(404, "Vehicle not found");
+        }
+        return mapToDTO(vehicle);
     }
 
     /**
@@ -77,6 +89,7 @@ public class VehicleService {
         return new VehicleDTO(
                 save.getVehicleId(),
                 save.getClient() != null ? save.getClient().getClientId() : null,
+                save.getLicencePlate(),
                 save.getBrand(),
                 save.getModel(),
                 save.getYear(),

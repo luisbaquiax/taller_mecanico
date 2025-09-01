@@ -103,7 +103,7 @@ CREATE TABLE parts(
 CREATE TABLE inventary_movements(
     mv_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     part_id INT NOT NULL,
-    created_by INT NOT NULL,
+    created_by INT,
     type_movement ENUM('entrada', 'salida', 'ajuste') NOT NULL,
     reference VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
@@ -120,11 +120,16 @@ CREATE TABLE type_jobs(
 );
 
 -- status-jobs
-CREATE TABLE status_jobs(
-    status_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name_status_job VARCHAR(100) NOT NULL,
-    description_status_job VARCHAR(200) NOT NULL
-);
+-- Insert job statuses
+INSERT INTO status_jobs (name_status_job, description_status_job) VALUES
+('pendiente', 'Trabajo programado pero no iniciado'),
+('evaluacion', 'Trabajo en revisión antes de ejecución'),
+('autorizado', 'Trabajo aprobado para ejecución'),
+('en_curso', 'Trabajo en ejecución'),
+('pausado', 'Trabajo detenido temporalmente'),
+('finalizado', 'Trabajo finalizado con éxito'),
+('cancelado', 'Trabajo cancelado antes de finalizar'),
+('finalizado_sin_ejecucion', 'Trabajo finalizado sin haber sido ejecutado');
 
 -- jobs
 CREATE TABLE jobs(
@@ -248,3 +253,35 @@ CREATE TABLE quotation_items(
     unit_price DECIMAL(10,2) DEFAULT 0.00,
     FOREIGN KEY (quotation_id) REFERENCES quotations(quotation_id)
 );
+
+
+    SELECT
+        j.job_id as jobId,
+        v.licence_plate as licencePlate,
+        v.brand as vehicleBrand,
+        v.model as vehicleModel,
+        v.year as vehicleYear,
+        p.name_part as partName,
+        p.brand_part as partBrand,
+        jp.quantity as quantity,
+        jp.price as price,
+        jp.created_at as createdAt,
+        j.description as jobDescription
+    FROM
+        jobs j
+    INNER JOIN
+        vehicles v
+            ON j.vehicle_id = v.vehicle_id
+    INNER JOIN
+        clients c
+            ON v.client_id = c.client_id
+    INNER JOIN
+        jobs_parts jp
+            ON j.job_id = jp.job_id
+    INNER JOIN
+        parts p
+            ON jp.part_id = p.part_id
+    WHERE
+        c.user_id = 4
+    ORDER BY
+        jp.created_at DESC

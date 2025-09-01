@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterSupplier } from './register-supplier';
+import { AddInventory } from './add-inventory';
 
-describe('RegisterSupplier', () => {
-  let component: RegisterSupplier;
-  let fixture: ComponentFixture<RegisterSupplier>;
+describe('AddInventory', () => {
+  let component: AddInventory;
+  let fixture: ComponentFixture<AddInventory>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterSupplier]
+      imports: [AddInventory]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegisterSupplier);
+    fixture = TestBed.createComponent(AddInventory);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
