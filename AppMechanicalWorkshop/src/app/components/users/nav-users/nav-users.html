@@ -1,0 +1,93 @@
+<mat-sidenav-container class="h-screen">
+    <mat-sidenav mode="side" opened class="w-72 bg-gray-900 text-white">
+        <div class="p-4 text-xl font-bold border-b border-gray-700">nombre.cliente</div>
+
+        <nav class="flex flex-col p-2 space-y-2">
+            <div>
+                <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Vehiculos</h3>
+                <a routerLink="list-users" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">directions_car</mat-icon>
+                    Agregar vehiculo propio
+                </a>
+                <a routerLink="register-user" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">no_crash</mat-icon>
+                    Mis Vehiculos
+                </a>
+            </div>
+
+            <div>
+                <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+                    Repuestos
+                </h3>
+                <a routerLink="register-vehicle" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">search_gear</mat-icon>
+                    Mis repuestos
+                </a>
+                <a routerLink="register-vehicle" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">hardware</mat-icon>
+                    Facturacion de repuestos
+                </a>
+            </div>
+
+            <div>
+                <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+                    Gestion de servicios
+                </h3>
+                <a routerLink="/jobs" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">assignment</mat-icon>
+                    Cotizaciones
+                </a>
+                <a routerLink="/assignment" routerLinkActive="bg-gray-800 text-white"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">build</mat-icon>
+                    Servicios
+                </a>
+                <a routerLink="/solicitudes" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">payments</mat-icon>
+                    Facturas
+                </a>
+            </div>
+            <div>
+                <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+                    Solicitudes
+                </h3>
+                <a routerLink="/operations" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">visibility</mat-icon>
+                    Diagnosticos
+                </a>
+                <a routerLink="/reportes" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">bar_chart</mat-icon>
+                    Solicitudes de servicios
+                </a>
+            </div>
+
+            <div>
+                <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+                    Configuración y ajustes
+                </h3>
+                <button type="button" routerLinkActive="bg-gray-800"
+                    class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
+                    <mat-icon class="mr-2">logout</mat-icon>
+                    Cerrar sesión
+                </button>
+            </div>
+        </nav>
+    </mat-sidenav>
+
+    <!-- Contenido -->
+    <mat-sidenav-content class="p-6 bg-gray-100">
+        <h1 class="text-xl font-bold ml-4">Taller Central</h1>
+        <button mat-icon-button (click)="toggleSidenav()" class="md:hidden">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

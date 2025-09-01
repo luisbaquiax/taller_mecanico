@@ -1,0 +1,126 @@
+<div class="dashboard-container">
+    <!-- Columna izquierda -->
+    <div class="left-column">
+
+        <!-- Recuadro 2: Tabla (2/3 altura) -->
+        <mat-card class="card card-large">
+            <h3>Servicio de vehiculos</h3>
+            <div class="scrollable">
+                <table mat-table [dataSource]="jobDetails" class="mat-elevation-z8 mat-table-bordered">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nameTypeJob}} </td>
+                    </ng-container>
+
+                    <!-- Description Column -->
+                    <ng-container matColumnDef="servicio">
+                        <th mat-header-cell *matHeaderCellDef> Servicio </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nameServiceType}} </td>
+                    </ng-container>
+
+                    <!-- Price Column -->
+                    <ng-container matColumnDef="vehicle">
+                        <th mat-header-cell *matHeaderCellDef> Vehiculo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.model }} {{element.color}} </td>
+                    </ng-container>
+
+                    <!-- Edit Column -->
+                    <ng-container matColumnDef="state">
+                        <th mat-header-cell *matHeaderCellDef> Estado </th>
+                        <td mat-cell *matCellDef="let element"> {{element.nameStatusJob}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="['tipo', 'servicio', 'vehicle', 'state']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['tipo', 'servicio', 'vehicle', 'state'];"></tr>
+                </table>
+            </div>
+        </mat-card>
+
+        <!-- Recuadro 3: Listado (1/3 altura) -->
+        <mat-card class="card card-small">
+            <div class="scrollable">
+                <mat-card class="card card-large">
+                    <h3>Facturas</h3>
+                    <div class="scrollable">
+                        <table mat-table [dataSource]="invoices" class="mat-elevation-z8 mat-table-bordered">
+
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="tipo">
+                                <th mat-header-cell *matHeaderCellDef> No. </th>
+                                <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="servicio">
+                                <th mat-header-cell *matHeaderCellDef> Servicio </th>
+                                <td mat-cell *matCellDef="let element"> {{element.jobDescription}} a
+                                    {{element.vehicleBrand}} {{element.vehicleModel}} {{element.vehicleYear}} </td>
+                            </ng-container>
+
+                            <!-- Price Column -->
+                            <ng-container matColumnDef="vehicle">
+                                <th mat-header-cell *matHeaderCellDef> Total </th>
+                                <td mat-cell *matCellDef="let element"> {{element.total }}</td>
+                            </ng-container>
+
+                            <!-- Edit Column -->
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                <td mat-cell *matCellDef="let element"> {{element.invoiceStatus}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="['tipo', 'servicio', 'vehicle', 'state']"></tr>
+                            <tr mat-row *matRowDef="let row; columns: ['tipo', 'servicio', 'vehicle', 'state'];"></tr>
+                        </table>
+                    </div>
+                </mat-card>
+            </div>
+        </mat-card>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="right-column">
+        <!-- Recuadro 4 -->
+        <mat-card class="card full-card">
+            <div class="scrollable">
+                <mat-card class="card card-large">
+                    <h3>Partes adquiridas</h3>
+                    <div class="scrollable">
+                        <table mat-table [dataSource]="parts" class="mat-elevation-z8 mat-table-bordered">
+
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="tipo">
+                                <th mat-header-cell *matHeaderCellDef> Trabajo </th>
+                                <td mat-cell *matCellDef="let element"> {{element.jobId}} </td>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="servicio">
+                                <th mat-header-cell *matHeaderCellDef> Vehiculo </th>
+                                <td mat-cell *matCellDef="let element">{{element.vehicleBrand}} {{element.vehicleModel}}
+                                    {{element.vehicleYear}} </td>
+                            </ng-container>
+
+                            <!-- Price Column -->
+                            <ng-container matColumnDef="vehicle">
+                                <th mat-header-cell *matHeaderCellDef> Pieza </th>
+                                <td mat-cell *matCellDef="let element"> {{element.partName}} Marca: {{element.partBrand}} </td>
+                            </ng-container>
+
+                            <!-- Edit Column -->
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef> Total </th>
+                                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="['tipo', 'servicio', 'vehicle', 'state']"></tr>
+                            <tr mat-row *matRowDef="let row; columns: ['tipo', 'servicio', 'vehicle', 'state'];"></tr>
+                        </table>
+                    </div>
+                </mat-card>
+            </div>
+        </mat-card>
+    </div>
+</div>

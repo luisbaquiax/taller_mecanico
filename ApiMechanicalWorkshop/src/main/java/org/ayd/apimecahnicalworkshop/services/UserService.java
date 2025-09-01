@@ -104,7 +104,7 @@ public class UserService {
                 );
 
         Client client = new Client();
-        client.setUserId(saveUser.getUserId());
+        client.setUser(saveUser);
         client.setNit(user.getNit());
         client.setAddress(user.getAddress());
         clientRepository.save(client);

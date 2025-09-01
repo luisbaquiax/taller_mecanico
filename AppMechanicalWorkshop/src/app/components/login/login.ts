@@ -50,6 +50,8 @@ export class Login {
       this.userService.getUserByUsernamePassword(username!, password!).subscribe({
         next: (data: UserDTO) => {
           // Aquí puedes manejar la respuesta del servicio, por ejemplo, guardar el token y redirigir al usuario
+          localStorage.setItem('user', JSON.stringify(data));
+          
           switch (data.rolId) {
             case 1:
               this.router.navigate(['/admin']);
@@ -61,7 +63,8 @@ export class Login {
               //this.router.navigate(['/specialist-nav']);
               break;
             case 4:
-              //this.router.navigate(['/client-nav']);
+              this.router.navigate(['/client']);
+              console.log(data);
               break;
             default:
               //rol desconocido
