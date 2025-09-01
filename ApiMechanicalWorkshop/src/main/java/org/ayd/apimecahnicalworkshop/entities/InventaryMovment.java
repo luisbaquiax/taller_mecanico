@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventaryMovement {
+public class InventaryMovment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mv_id", nullable = false)
@@ -30,8 +30,5 @@ public class InventaryMovement {
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
-
-    @Column(name = "created_at", nullable = false)
-    private String createdAt;
 
 }

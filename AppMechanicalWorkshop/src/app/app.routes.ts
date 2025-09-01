@@ -13,6 +13,9 @@ import {EmployeeActiveJobsComponent} from './components/employee/employee-active
 import {EmployeeHistoryComponent} from './components/employee/employee-history/employee-history.component';
 import {JobDetailsComponent} from './components/job/job-details.component';
 import {UserProfileComponent} from './components/user/user-profile.component';
+import { RegisterPartComponenet } from './components/admin/register-part/register-part';
+import { AddInventoryComponent } from './components/admin/add-inventory/add-inventory';
+import { ListPartsComponent } from './components/admin/list-parts/list-parts';
 
 export const routes: Routes = [
   {
@@ -43,7 +46,22 @@ export const routes: Routes = [
         path: 'register-vehicle',
         component: RegisterVehicleComponent,
         title: 'Register Vehicle',
-      }
+      },
+      {
+        path: 'list-parts',
+        component: ListPartsComponent,
+        title: 'List Parts',
+      },
+      {
+        path: 'register-part',
+        component: RegisterPartComponenet,
+        title: 'Register Part',
+      },
+      {
+        path: 'add-inventory',
+        component: AddInventoryComponent,
+        title: 'Add Inventory',
+      },
     ],
   },
   {
