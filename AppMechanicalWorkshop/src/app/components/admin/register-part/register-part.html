@@ -1,0 +1,88 @@
+<div class="flex items-center min-h-screen justify-center bg-gray-100 p-4">
+  <div class="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">Registrar repuesto</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Proveedor -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Proveedor</mat-label>
+        <mat-select formControlName="userId">
+          <mat-option *ngFor="let supplier of supplieres" [value]="supplier.id">
+            {{ getNameSupplier(supplier.userId) }}
+          </mat-option>
+        </mat-select>
+        @if (registerForm.get('userId')?.hasError('required')) {
+        <mat-error>El nombre del proveedor es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Nombre de la pieza -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Nombre de la pieza</mat-label>
+        <input matInput formControlName="namePart" placeholder="Ingrese el nombre de la pieza" />
+        @if (registerForm.get('namePart')?.hasError('required')) {
+        <mat-error>El nombre de la pieza es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Marca de la pieza -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Marca de la pieza</mat-label>
+        <input matInput formControlName="brandPart" placeholder="Ingrese la marca de la pieza" />
+        @if (registerForm.get('brandPart')?.hasError('required')) {
+        <mat-error>La marca de la pieza es obligatoria</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Descripción de la pieza -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="descriptionPart" placeholder="Ingrese la descripción" />
+        @if (registerForm.get('descriptionPart')?.hasError('required')) {
+        <mat-error>La descripción es obligatoria</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Precio de costo -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Precio de costo</mat-label>
+        <input matInput type="number" formControlName="costPrice" placeholder="Ingrese el precio de costo" />
+        @if (registerForm.get('costPrice')?.hasError('required')) {
+        <mat-error>El precio de costo es obligatorio</mat-error>
+        }
+        @if (registerForm.get('costPrice')?.hasError('min')) {
+        <mat-error>El precio de costo debe ser mayor o igual a 0</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Precio de venta -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Precio de venta</mat-label>
+        <input matInput type="number" formControlName="salePrice" placeholder="Ingrese el precio de venta" />
+        @if (registerForm.get('salePrice')?.hasError('required')) {
+        <mat-error>El precio de venta es obligatorio</mat-error>
+        }
+        @if (registerForm.get('salePrice')?.hasError('min')) {
+        <mat-error>El precio de venta debe ser mayor o igual a 0</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Stock -->
+      <mat-form-field floatLabel="always" class="w-full mb-4">
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" formControlName="stockPart" placeholder="Ingrese el stock" />
+        @if (registerForm.get('stockPart')?.hasError('required')) {
+        <mat-error>El stock es obligatorio</mat-error>
+        }
+        @if (registerForm.get('stockPart')?.hasError('min')) {
+        <mat-error>El stock debe ser mayor o igual a 0</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Botón registrar -->
+      <button matButton="filled" class="w-full mt-4 !rounded-none" type="submit" [disabled]="!registerForm.valid">
+        Guardar cambios
+      </button>
+    </form>
+  </div>
+</div>

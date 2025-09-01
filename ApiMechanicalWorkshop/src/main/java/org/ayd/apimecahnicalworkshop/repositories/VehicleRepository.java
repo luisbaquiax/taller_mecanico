@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
     List<Vehicle> getVehicleByClientIsNull();
+
+    Vehicle getByLicencePlate(String licencePlate);
 }

@@ -1,0 +1,111 @@
+<div class="p-4">
+  <h2 class="text-2xl font-bold text-center bg">Lista de Repuestos</h2>
+  <div class="row">
+    <div class="col-2">
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getAllParts()"
+      >
+        TODOS
+      </button>
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getPartsByIsActive(true)"
+      >
+        ACTIVOS
+      </button>
+      <button
+        mat-raised-button
+        class="!rounded p-4 m-4 text-dark"
+        (click)="getPartsByIsActive(false)"
+      >
+        DESACTIVADOS
+      </button>
+      <!--
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput placeholder="Buscar" #input />
+      </mat-form-field>
+      -->
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- ID Column -->
+    <ng-container matColumnDef="partId">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.partId }}</td>
+    </ng-container>
+
+    <!-- Supplier ID Column -->
+    <ng-container matColumnDef="supplierId">
+      <th mat-header-cell *matHeaderCellDef>ID Proveedor</th>
+      <td mat-cell *matCellDef="let element">{{ element.supplierId }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="namePart">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.namePart }}</td>
+    </ng-container>
+
+    <!-- Brand Column -->
+    <ng-container matColumnDef="brandPart">
+      <th mat-header-cell *matHeaderCellDef>Marca</th>
+      <td mat-cell *matCellDef="let element">{{ element.brandPart }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="descriptionPart">
+      <th mat-header-cell *matHeaderCellDef>Descripción</th>
+      <td mat-cell *matCellDef="let element">{{ element.descriptionPart }}</td>
+    </ng-container>
+
+    <!-- Cost Price Column -->
+    <ng-container matColumnDef="costPrice">
+      <th mat-header-cell *matHeaderCellDef>Precio de Costo</th>
+      <td mat-cell *matCellDef="let element">{{ element.costPrice | currency:'Q. ' }}</td>
+    </ng-container>
+
+    <!-- Sale Price Column -->
+    <ng-container matColumnDef="salePrice">
+      <th mat-header-cell *matHeaderCellDef>Precio de Venta</th>
+      <td mat-cell *matCellDef="let element">{{ element.salePrice | currency:'Q. ' }}</td>
+    </ng-container>
+
+    <!-- Stock Column -->
+    <ng-container matColumnDef="stockPart">
+      <th mat-header-cell *matHeaderCellDef>Stock</th>
+      <td mat-cell *matCellDef="let element">{{ element.stockPart }}</td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="isActive">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.active === true ? 'Activo' : 'Desactivado' }}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton title="Editar"><mat-icon>edit</mat-icon></button>
+        <button
+          matIconButton
+          (click)="updatePart(element)"
+          title="{{ element.active === true ? 'Desactivar' : 'Activar' }}"
+        >
+          <mat-icon>{{
+            element.active === true ? 'do_not_disturb_off' : 'data_saver_on'
+          }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

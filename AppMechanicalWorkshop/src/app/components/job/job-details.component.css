@@ -1,0 +1,87 @@
+/* job-details.component.css */
+
+/* Efectos hover para las cards */
+.mat-mdc-card:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Espaciado personalizado para las grid */
+.grid {
+  display: grid;
+}
+
+/* Espaciado para tabs */
+.mat-mdc-tab-body-wrapper {
+  padding: 0;
+}
+
+/* Efectos para formularios */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Botones con efectos */
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Chips personalizados */
+.mat-mdc-chip {
+  font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .p-6 {
+    padding: 1rem;
+  }
+}
+
+/* Loading animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Estilos para el historial de progreso */
+.progress-item {
+  border-left: 3px solid transparent;
+  padding-left: 1rem;
+  transition: all 0.2s ease;
+}
+
+.progress-item:hover {
+  border-left-color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+/* Estilos para diferentes tipos de progreso */
+.progress-avance {
+  border-left-color: #10b981;
+}
+
+.progress-solicitud {
+  border-left-color: #f59e0b;
+}
+
+.progress-danos {
+  border-left-color: #ef4444;
+}
+
+.progress-repuesto {
+  border-left-color: #8b5cf6;
+}

@@ -103,7 +103,7 @@ CREATE TABLE parts(
 CREATE TABLE inventary_movements(
     mv_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     part_id INT NOT NULL,
-    created_by INT NOT NULL,
+    created_by INT,
     type_movement ENUM('entrada', 'salida', 'ajuste') NOT NULL,
     reference VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
@@ -120,11 +120,16 @@ CREATE TABLE type_jobs(
 );
 
 -- status-jobs
-CREATE TABLE status_jobs(
-    status_job_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name_status_job VARCHAR(100) NOT NULL,
-    description_status_job VARCHAR(200) NOT NULL
-);
+-- Insert job statuses
+INSERT INTO status_jobs (name_status_job, description_status_job) VALUES
+('pendiente', 'Trabajo programado pero no iniciado'),
+('evaluacion', 'Trabajo en revisión antes de ejecución'),
+('autorizado', 'Trabajo aprobado para ejecución'),
+('en_curso', 'Trabajo en ejecución'),
+('pausado', 'Trabajo detenido temporalmente'),
+('finalizado', 'Trabajo finalizado con éxito'),
+('cancelado', 'Trabajo cancelado antes de finalizar'),
+('finalizado_sin_ejecucion', 'Trabajo finalizado sin haber sido ejecutado');
 
 -- jobs
 CREATE TABLE jobs(

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class VehicleDTO {
     private Long vehicleId;
     private Long clientId;
+    private String licencePlate;
     private String brand;
     private String model;
     private String year;

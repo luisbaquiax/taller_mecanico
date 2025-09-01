@@ -1,0 +1,95 @@
+<mat-sidenav-container class="h-screen">
+  <!-- Sidebar -->
+  <mat-sidenav mode="side" opened class="w-72 bg-gray-900 text-white">
+    <div class="p-4 text-xl font-bold border-b border-gray-700">
+      <div class="flex items-center">
+        <mat-icon class="mr-2">engineering</mat-icon>
+        Empleado
+      </div>
+      <div class="text-sm font-normal text-gray-300 mt-1">
+        {{ employeeName }}
+      </div>
+    </div>
+
+    <nav class="flex flex-col p-2 space-y-2">
+
+      <!-- Dashboard -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Dashboard</h3>
+        <a
+          routerLink="dashboard"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">dashboard</mat-icon>
+          Dashboard Principal
+        </a>
+      </div>
+
+      <!-- Mis Trabajos -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">Mis Trabajos</h3>
+        <a
+          routerLink="jobs"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">assignment</mat-icon>
+          Trabajos Asignados
+        </a>
+        <a
+          routerLink="active-jobs"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">work</mat-icon>
+          Trabajos Activos
+        </a>
+        <a
+          routerLink="history"
+          routerLinkActive="bg-gray-800 text-white"
+          class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+        >
+          <mat-icon class="mr-2">history</mat-icon>
+          Historial de Trabajos
+        </a>
+      </div>
+
+      <!-- Perfil y Configuración -->
+      <div>
+        <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
+          Perfil y Configuración
+        </h3>
+        <button
+          type="button"
+          routerLinkActive="bg-gray-800"
+          class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          (click)="goToProfile()"
+        >
+          <mat-icon class="mr-2">profile</mat-icon>
+          Mi Perfil
+        </button>
+        <button
+          type="button"
+          routerLinkActive="bg-gray-800"
+          class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          (click)="logout()"
+        >
+          <mat-icon class="mr-2">logout</mat-icon>
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
+  </mat-sidenav>
+
+  <!-- Contenido -->
+  <mat-sidenav-content class="p-6 bg-gray-100">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-bold ml-4">Taller Central - Portal del Empleado</h1>
+      <button mat-icon-button (click)="toggleSidenav()" class="md:hidden">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
