@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.List;
 
 public interface PartRepository extends CrudRepository<Part, Long> {
+    List<Part> getPartByActive(Boolean active);
 
+    Part findPartByNamePartIgnoreCaseAndSupplierId(String namePart, Long supplierId);
 
     @Query(value = """
         SELECT 

@@ -44,10 +44,8 @@ public class PartController {
         return service.update(partDTO, addStock);
     }
 
-    /*
     @GetMapping("/findByNamePartAndSupplierId/{namePart}/{supplierId}")
     public PartDTO getByNamePartAndSupplierId(@PathVariable String namePart, @PathVariable Long supplierId) {
         return service.findPartByNamePartIgnoreCaseAndSupplierId(namePart, supplierId);
     }
-    */
 }
