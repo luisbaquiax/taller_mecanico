@@ -4,6 +4,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
+import { UserDTO } from '../../../interfaces/UserDTO';
 
 @Component({
   selector: 'app-nav-users',
@@ -18,5 +19,8 @@ export class NavUsers {
   toggleSidenav() {
     this.sidenav.toggle();
   }
+
+  user_logged: UserDTO = JSON.parse(localStorage.getItem('user') || '{}');
+
 
 }

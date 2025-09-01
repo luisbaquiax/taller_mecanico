@@ -1,6 +1,6 @@
 <mat-sidenav-container class="h-screen">
     <mat-sidenav mode="side" opened class="w-72 bg-gray-900 text-white">
-        <div class="p-4 text-xl font-bold border-b border-gray-700">nombre.cliente</div>
+        <div class="p-4 text-xl font-bold border-b border-gray-700">{{ user_logged.name }}</div>
 
         <nav class="flex flex-col p-2 space-y-2">
             <div>
@@ -16,7 +16,6 @@
                     Mis Vehiculos
                 </a>
             </div>
-
             <div>
                 <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
                     Repuestos
