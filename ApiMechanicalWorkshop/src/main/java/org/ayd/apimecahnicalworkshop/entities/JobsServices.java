@@ -14,11 +14,13 @@ public class JobsServices {
     @Column(name = "job_service_id", nullable = false)
     private Long jobServiceId;
 
-    @Column(name = "job_id", nullable = false)
-    private Long jobId;
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
 
-    @Column(name = "service_type_id", nullable = false)
-    private Long serviceTypeId;
+    @ManyToOne
+    @JoinColumn(name = "service_type_id")
+    private ServiceType serviceType;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;

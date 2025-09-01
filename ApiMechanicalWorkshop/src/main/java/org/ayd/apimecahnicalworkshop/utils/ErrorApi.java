@@ -10,4 +10,8 @@ public class ErrorApi extends Error{
         super(message);
         this.status = status;
     }
+
+    public int getCode() {
+        return status;
+    }
 }
