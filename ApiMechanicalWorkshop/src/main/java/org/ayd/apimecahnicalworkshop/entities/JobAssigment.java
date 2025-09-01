@@ -20,8 +20,9 @@ public class JobAssigment {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "role_assignment", nullable = false, length = 20)
-    private String roleAssignment;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_assignment", nullable = false)
+    private RoleAssignment roleAssignment;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
@@ -31,4 +32,6 @@ public class JobAssigment {
 
     @Column(name = "unassigned_at")
     private String unassignedAt;
+    
+    public enum RoleAssignment { empleado, especialista }
 }

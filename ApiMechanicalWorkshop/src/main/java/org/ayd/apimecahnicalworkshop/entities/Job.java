@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "status_jobs")
+@Table(name = "jobs")
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Job {
     @Id
