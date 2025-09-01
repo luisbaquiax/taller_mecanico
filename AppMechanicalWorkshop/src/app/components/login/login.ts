@@ -49,13 +49,16 @@ export class Login {
       console.log('Password:', password);
       this.userService.getUserByUsernamePassword(username!, password!).subscribe({
         next: (data: UserDTO) => {
+          localStorage.setItem('currentUser', JSON.stringify(data));
+          localStorage.setItem('userId', data.userId?.toString() || '');
+          localStorage.setItem('userRole', data.rolId?.toString() || '');
           // Aquí puedes manejar la respuesta del servicio, por ejemplo, guardar el token y redirigir al usuario
           switch (data.rolId) {
             case 1:
               this.router.navigate(['/admin']);
               break;
             case 2:
-              //this.router.navigate(['/employee-nav']);
+              this.router.navigate(['/employee']);
               break;
             case 3:
               //this.router.navigate(['/specialist-nav']);

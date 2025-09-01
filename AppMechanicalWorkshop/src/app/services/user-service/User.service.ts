@@ -66,4 +66,82 @@ export class UserService {
   public getUserByIsActive(isActive: boolean): Observable<UserDTO[]> {
     return this.http.get<UserDTO[]>(`${this.apiUrl}/isActive/${isActive}`);
   }
+
+  /**
+   * Get user by ID
+   * @param userId
+   * @returns UserDTO
+   */
+  public getUserById(userId: number): Observable<UserDTO> {
+    return this.http.get<UserDTO>(`${this.apiUrl}/${userId}`);
+  }
+
+  /**
+   * Change user password
+   * @param passwordData
+   * @returns Response
+   */
+  public changePassword(passwordData: {
+    userId: number;
+    currentPassword: string;
+    newPassword: string;
+  }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/changePassword`, passwordData);
+  }
+
+  /**
+   * Test 2FA code sending
+   * @param testData
+   * @returns Response
+   */
+  public test2FA(testData: {
+    userId: number;
+    email: string;
+    phone: string;
+    type: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/test2fa`, testData);
+  }
+
+  /**
+   * Send verification code for 2FA
+   * @param userData
+   * @returns Response
+   */
+  public send2FACode(userData: {
+    userId: number;
+    email?: string;
+    phone?: string;
+    type: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/send2fa`, userData);
+  }
+
+  /**
+   * Verify 2FA code
+   * @param verifyData
+   * @returns Response
+   */
+  public verify2FACode(verifyData: {
+    userId: number;
+    code: string;
+    type: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/verify2fa`, verifyData);
+  }
+
+  /**
+   * Enable/Disable 2FA for user
+   * @param userId
+   * @param enabled
+   * @param type
+   * @returns Response
+   */
+  public toggle2FA(userId: number, enabled: boolean, type?: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/toggle2fa`, {
+      userId,
+      enabled,
+      type: type || 2 // Email por defecto
+    });
+  }
 }

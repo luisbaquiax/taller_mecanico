@@ -1,0 +1,190 @@
+<div class="p-4">
+
+  <!-- Header del Dashboard -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">Dashboard del Empleado</h2>
+      <p class="text-gray-600">¡Bienvenido, {{ empleado().name }}!</p>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="refreshDashboard()"
+      class="!rounded"
+    >
+      <mat-icon class="mr-2">refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex flex-col items-center justify-center py-12">
+    <mat-progress-bar mode="indeterminate" class="w-64 mb-4"></mat-progress-bar>
+    <p class="text-gray-600">Cargando dashboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="flex items-center">
+      <mat-icon class="mr-2">error</mat-icon>
+      <span>{{ error() }}</span>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="refreshDashboard()"
+      class="mt-2 !rounded"
+    >
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading() && !error()">
+
+    <!-- Mensaje de Bienvenida -->
+    <div *ngIf="dashboardData()" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div class="flex items-center">
+        <mat-icon class="text-blue-600 mr-2">info</mat-icon>
+        <div>
+          <p class="font-medium text-blue-800">{{ dashboardData().message }}</p>
+          <p class="text-blue-600 text-sm">Estado: {{ dashboardData().status }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadísticas en Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+      <!-- Trabajos Activos -->
+      <mat-card class="hover:shadow-lg transition-shadow duration-200">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Trabajos Activos</p>
+              <p class="text-2xl font-bold text-blue-600">{{ stats().trabajosActivos }}</p>
+            </div>
+            <mat-icon class="text-blue-500 text-3xl">work</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Trabajos Completados -->
+      <mat-card class="hover:shadow-lg transition-shadow duration-200">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Completados</p>
+              <p class="text-2xl font-bold text-green-600">{{ stats().trabajosCompletados }}</p>
+            </div>
+            <mat-icon class="text-green-500 text-3xl">check_circle</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Trabajos Pendientes -->
+      <mat-card class="hover:shadow-lg transition-shadow duration-200">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Pendientes</p>
+              <p class="text-2xl font-bold text-orange-600">{{ stats().trabajosPendientes }}</p>
+            </div>
+            <mat-icon class="text-orange-500 text-3xl">pending</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Horas Trabajadas -->
+      <mat-card class="hover:shadow-lg transition-shadow duration-200">
+        <mat-card-content class="p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Horas Trabajadas</p>
+              <p class="text-2xl font-bold text-purple-600">{{ stats().horasTrabajadas }}</p>
+            </div>
+            <mat-icon class="text-purple-500 text-3xl">schedule</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Panel de Acciones -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Acciones Rápidas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="space-y-3">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="navigateToJobs()"
+              class="w-full !rounded flex items-center justify-start"
+            >
+              <mat-icon class="mr-2">assignment</mat-icon>
+              Ver Trabajos Asignados
+            </button>
+
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="navigateToHistory()"
+              class="w-full !rounded flex items-center justify-start"
+            >
+              <mat-icon class="mr-2">history</mat-icon>
+              Historial de Trabajos
+            </button>
+
+            <button
+              mat-raised-button
+              (click)="navigateToProfile()"
+              class="w-full !rounded flex items-center justify-start"
+            >
+              <mat-icon class="mr-2">person</mat-icon>
+              Mi Perfil
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Actividad Reciente -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Actividad Reciente</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <div class="space-y-3">
+            <div class="flex items-center p-2 bg-gray-50 rounded">
+              <mat-icon class="text-green-500 mr-3">check_circle</mat-icon>
+              <div>
+                <p class="font-medium">Trabajo #1001 completado</p>
+                <p class="text-sm text-gray-600">Hace 2 horas</p>
+              </div>
+            </div>
+
+            <div class="flex items-center p-2 bg-gray-50 rounded">
+              <mat-icon class="text-blue-500 mr-3">schedule</mat-icon>
+              <div>
+                <p class="font-medium">Trabajo #1002 iniciado</p>
+                <p class="text-sm text-gray-600">Hace 4 horas</p>
+              </div>
+            </div>
+
+            <div class="flex items-center p-2 bg-gray-50 rounded">
+              <mat-icon class="text-orange-500 mr-3">assignment</mat-icon>
+              <div>
+                <p class="font-medium">Nuevo trabajo #1003 asignado</p>
+                <p class="text-sm text-gray-600">Ayer</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

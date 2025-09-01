@@ -1,0 +1,386 @@
+<div class="p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="goBack()" class="mr-2">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Detalles del Trabajo</h2>
+        <p class="text-gray-600" *ngIf="job()">{{ job()?.placaVehiculo }} - {{ job()?.marcaVehiculo }} {{ job()?.modeloVehiculo }}</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="refreshDetails()">
+      <mat-icon class="mr-2">refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-12">
+    <mat-progress-bar mode="indeterminate" class="w-64"></mat-progress-bar>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="flex items-center">
+      <mat-icon class="mr-2">error</mat-icon>
+      <span>{{ error() }}</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading() && !error() && job()">
+
+    <!-- Información del Trabajo -->
+    <mat-card class="mb-6">
+      <mat-card-header>
+        <mat-card-title>Información General</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Estado -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-3">{{ getEstadoIcon(job()!.estadoTrabajo) }}</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Estado</p>
+              <mat-chip [color]="getEstadoColor(job()!.estadoTrabajo)" selected>
+                {{ job()!.estadoTrabajo }}
+              </mat-chip>
+            </div>
+          </div>
+
+          <!-- Cliente -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-3">person</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Cliente</p>
+              <p class="font-medium">{{ job()!.clienteNombre }}</p>
+            </div>
+          </div>
+
+          <!-- Tipo de Mantenimiento -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-3">build</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Tipo</p>
+              <p class="font-medium">{{ job()!.tipoMantenimiento }}</p>
+            </div>
+          </div>
+
+          <!-- Horas Estimadas -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-3">schedule</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Horas Estimadas</p>
+              <p class="font-medium">{{ job()!.horasEstimadas || 0 }} horas</p>
+            </div>
+          </div>
+
+          <!-- Fecha de Asignación -->
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-3">today</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Fecha Asignación</p>
+              <p class="font-medium">{{ job()!.fechaAsignacion | date:'short' }}</p>
+            </div>
+          </div>
+
+          <!-- Fecha de Inicio -->
+          <div class="flex items-center" *ngIf="job()!.fechaInicio">
+            <mat-icon class="text-gray-500 mr-3">play_arrow</mat-icon>
+            <div>
+              <p class="text-sm text-gray-600">Fecha Inicio</p>
+              <p class="font-medium">{{ job()!.fechaInicio | date:'short' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="mt-6">
+          <p class="text-sm text-gray-600 mb-2">Descripción del Trabajo</p>
+          <p class="text-gray-800 p-3 bg-gray-50 rounded">{{ job()!.descripcion }}</p>
+        </div>
+      </mat-card-content>
+
+      <!-- Acciones del Trabajo -->
+      <mat-card-actions class="p-6 pt-0">
+        <button
+          *ngIf="job()!.estadoTrabajo === 'ASIGNADO' || job()!.estadoTrabajo === 'PENDIENTE'"
+          mat-raised-button
+          color="accent"
+          (click)="iniciarTrabajo()"
+        >
+          <mat-icon class="mr-2">play_arrow</mat-icon>
+          Iniciar Trabajo
+        </button>
+
+        <button
+          *ngIf="job()!.estadoTrabajo === 'EN_CURSO'"
+          mat-raised-button
+          color="primary"
+          (click)="finalizarTrabajo()"
+          class="ml-2"
+        >
+          <mat-icon class="mr-2">check</mat-icon>
+          Finalizar Trabajo
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Tabs para Acciones y Historial -->
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+
+      <!-- Aviso si está completado -->
+      <mat-card *ngIf="isCompleted()" class="mb-4 bg-green-50 border-l-4 border-green-500">
+        <mat-card-content class="flex items-center">
+          <mat-icon class="mr-2">check_circle</mat-icon>
+          Este trabajo está <strong>Completado</strong>. No se permiten más actualizaciones.
+        </mat-card-content>
+      </mat-card>
+
+        <!-- Tab: Registrar Actividades -->
+        <mat-tab *ngIf="!isCompleted()" label="Registrar Actividades">
+          <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+              <!-- Registrar Avance -->
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Registrar Avance</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-6">
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Descripción del Avance</mat-label>
+                    <textarea
+                      matInput
+                      rows="3"
+                      [(ngModel)]="avanceForm.descripcion"
+                      placeholder="Describe el progreso realizado..."
+                    ></textarea>
+                  </mat-form-field>
+
+                  <div class="grid grid-cols-2 gap-4">
+                    <mat-form-field>
+                      <mat-label>Horas Trabajadas</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        step="0.5"
+                        [(ngModel)]="avanceForm.horasTrabajadas"
+                      >
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Tipo de Avance</mat-label>
+                      <mat-select [(ngModel)]="avanceForm.tipo">
+                        <mat-option value="AVANCE">Avance General</mat-option>
+                        <mat-option value="REPARACION">Reparación</mat-option>
+                        <mat-option value="DIAGNOSTICO">Diagnóstico</mat-option>
+                        <mat-option value="PRUEBA">Prueba</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="registrarAvance()"
+                    [disabled]="!avanceForm.descripcion.trim()"
+                    class="w-full"
+                  >
+                    <mat-icon class="mr-2">add</mat-icon>
+                    Registrar Avance
+                  </button>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Solicitar Apoyo -->
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Solicitar Apoyo</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-6">
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Motivo de la Solicitud</mat-label>
+                    <textarea
+                      matInput
+                      rows="3"
+                      [(ngModel)]="apoyoForm.motivo"
+                      placeholder="Describe por qué necesitas apoyo..."
+                    ></textarea>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Tipo de Especialista</mat-label>
+                    <mat-select [(ngModel)]="apoyoForm.tipoEspecialista">
+                      <mat-option value="ELECTRICISTA">Electricista</mat-option>
+                      <mat-option value="MECANICO_SENIOR">Mecánico Senior</mat-option>
+                      <mat-option value="DIAGNOSTICO">Especialista en Diagnóstico</mat-option>
+                      <mat-option value="FRENOS">Especialista en Frenos</mat-option>
+                      <mat-option value="TRANSMISION">Especialista en Transmisión</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="solicitarApoyo()"
+                    [disabled]="!apoyoForm.motivo.trim()"
+                    class="w-full"
+                  >
+                    <mat-icon class="mr-2">help_outline</mat-icon>
+                    Solicitar Apoyo
+                  </button>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Reportar Daños -->
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Reportar Daños</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-6">
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Descripción de Daños</mat-label>
+                    <textarea
+                      matInput
+                      rows="3"
+                      [(ngModel)]="danosForm.descripcionDanos"
+                      placeholder="Describe los daños encontrados..."
+                    ></textarea>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Severidad</mat-label>
+                    <mat-select [(ngModel)]="danosForm.severidad">
+                      <mat-option value="BAJO">Bajo</mat-option>
+                      <mat-option value="MEDIO">Medio</mat-option>
+                      <mat-option value="ALTO">Alto</mat-option>
+                      <mat-option value="CRITICO">Crítico</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="reportarDanos()"
+                    [disabled]="!danosForm.descripcionDanos.trim()"
+                    class="w-full"
+                  >
+                    <mat-icon class="mr-2">report_problem</mat-icon>
+                    Reportar Daños
+                  </button>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Usar Repuesto -->
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Registrar Uso de Repuesto</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-6">
+                  <div class="grid grid-cols-2 gap-4 mb-4">
+                    <mat-form-field>
+                      <mat-label>ID del Repuesto</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        [(ngModel)]="repuestoForm.repuestoId"
+                        placeholder="Ej: 123"
+                      >
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Cantidad</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        min="1"
+                        [(ngModel)]="repuestoForm.cantidad"
+                      >
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field class="w-full mb-4">
+                    <mat-label>Observaciones</mat-label>
+                    <textarea
+                      matInput
+                      rows="2"
+                      [(ngModel)]="repuestoForm.observaciones"
+                      placeholder="Observaciones adicionales..."
+                    ></textarea>
+                  </mat-form-field>
+
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="usarRepuesto()"
+                    [disabled]="!repuestoForm.repuestoId"
+                    class="w-full"
+                  >
+                    <mat-icon class="mr-2">build_circle</mat-icon>
+                    Registrar Repuesto
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+      <!-- Tab: Historial de Progreso -->
+      <mat-tab label="Historial de Progreso">
+        <div class="p-6">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Progreso del Trabajo</mat-card-title>
+              <mat-card-subtitle>
+                {{ historial().length }} registro(s) de actividad
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="p-6">
+              <div class="space-y-4">
+                <div
+                  *ngFor="let progress of historial(); trackBy: trackByProgressId"
+                  class="flex items-start p-4 border border-gray-200 rounded-lg"
+                >
+                  <mat-icon class="text-gray-500 mr-3 mt-1">
+                    {{ getProgressIcon('AVANCE') }}
+                  </mat-icon>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start mb-2">
+                      <h4 class="font-medium text-gray-800">
+                        Actualización de Progreso
+                      </h4>
+                      <span class="text-sm text-gray-500">
+                  {{ progress.createdAt | date:'medium' }}
+                </span>
+                    </div>
+                    <p class="text-gray-700 mb-2">{{ progress.notes }}</p>
+                    <div *ngIf="progress.hoursSpent" class="text-sm text-blue-600">
+                      <mat-icon class="text-sm mr-1">schedule</mat-icon>
+                      {{ progress.hoursSpent }} horas trabajadas
+                    </div>
+                    <div class="text-xs text-gray-400 mt-2">
+                      Status ID: {{ progress.statusUpdateJobId }} | Usuario: {{ progress.createdBy }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Estado vacío -->
+              <div *ngIf="historial().length === 0" class="text-center py-8">
+                <mat-icon class="text-gray-400 text-4xl mb-2">history</mat-icon>
+                <p class="text-gray-600">No hay registros de progreso aún</p>
+                <p class="text-sm text-gray-500">Los avances aparecerán aquí conforme los registres</p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>
