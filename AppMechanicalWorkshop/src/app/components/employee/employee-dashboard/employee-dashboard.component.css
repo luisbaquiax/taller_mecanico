@@ -1,0 +1,50 @@
+/* employee-dashboard.component.css */
+
+/* Efectos de hover para las cards */
+.mat-mdc-card:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Espaciado personalizado para las estadísticas */
+.stat-card {
+  border-left: 4px solid transparent;
+}
+
+.stat-card.active {
+  border-left-color: #3b82f6;
+}
+
+.stat-card.completed {
+  border-left-color: #10b981;
+}
+
+.stat-card.pending {
+  border-left-color: #f59e0b;
+}
+
+.stat-card.hours {
+  border-left-color: #8b5cf6;
+}
+
+/* Animación suave para botones */
+button {
+  transition: all 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

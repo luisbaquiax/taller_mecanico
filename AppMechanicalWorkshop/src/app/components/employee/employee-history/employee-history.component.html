@@ -1,0 +1,223 @@
+<div class="p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="goBack()" class="mr-2">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Historial de Trabajos</h2>
+        <p class="text-gray-600">Trabajos completados exitosamente</p>
+      </div>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="refreshHistory()"
+      [disabled]="isLoading()"
+    >
+      <mat-icon class="mr-2">refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  <!-- Estadísticas de Resumen -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <mat-card class="bg-green-50 border-l-4 border-green-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-green-600">Total Completados</p>
+            <p class="text-2xl font-bold text-green-800">{{ completedJobs().length }}</p>
+          </div>
+          <mat-icon class="text-green-500 text-3xl">check_circle</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="bg-blue-50 border-l-4 border-blue-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-blue-600">Horas Reales</p>
+            <p class="text-2xl font-bold text-blue-800">{{ totalHorasReales.toFixed(1) }}</p>
+          </div>
+          <mat-icon class="text-blue-500 text-3xl">schedule</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="bg-purple-50 border-l-4 border-purple-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-purple-600">Horas Estimadas</p>
+            <p class="text-2xl font-bold text-purple-800">{{ totalHorasEstimadas.toFixed(1) }}</p>
+          </div>
+          <mat-icon class="text-purple-500 text-3xl">timer</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="bg-orange-50 border-l-4 border-orange-500">
+      <mat-card-content class="p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-orange-600">Eficiencia</p>
+            <p class="text-2xl font-bold text-orange-800">{{ eficienciaPromedio.toFixed(1) }}%</p>
+          </div>
+          <mat-icon class="text-orange-500 text-3xl">trending_up</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Filtros -->
+  <mat-card class="mb-6">
+    <mat-card-content class="p-4">
+      <div class="flex items-center space-x-4">
+        <mat-form-field class="flex-1">
+          <mat-label>Filtrar por tipo</mat-label>
+          <mat-select [(ngModel)]="filtroTipo" (selectionChange)="applyFilters()">
+            <mat-option value="">Todos los tipos</mat-option>
+            <mat-option value="Preventivo">Preventivo</mat-option>
+            <mat-option value="Correctivo">Correctivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="flex-1">
+          <mat-label>Período</mat-label>
+          <mat-select [(ngModel)]="filtroFecha" (selectionChange)="applyFilters()">
+            <mat-option value="">Todo el historial</mat-option>
+            <mat-option value="7">Últimos 7 días</mat-option>
+            <mat-option value="30">Últimos 30 días</mat-option>
+            <mat-option value="90">Últimos 3 meses</mat-option>
+            <mat-option value="180">Últimos 6 meses</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-stroked-button (click)="clearFilters()">
+          <mat-icon class="mr-2">clear</mat-icon>
+          Limpiar Filtros
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-12">
+    <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="flex items-center">
+      <mat-icon class="mr-2">error</mat-icon>
+      <span>{{ error() }}</span>
+    </div>
+    <button mat-raised-button color="primary" (click)="refreshHistory()" class="mt-2">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Lista de Trabajos Completados -->
+  <div *ngIf="!isLoading() && !error()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <mat-card
+      *ngFor="let job of completedJobs()"
+      class="hover:shadow-lg transition-shadow duration-200 border-l-4 border-green-500"
+    >
+      <mat-card-header class="pb-2">
+        <div class="flex justify-between items-center w-full">
+          <div>
+            <mat-card-title class="text-lg">
+              {{ job.placaVehiculo }} - {{ job.marcaVehiculo }} {{ job.modeloVehiculo }}
+            </mat-card-title>
+            <mat-card-subtitle>
+              Cliente: {{ job.clienteNombre }}
+            </mat-card-subtitle>
+          </div>
+          <mat-chip-set>
+            <mat-chip color="primary" selected>
+              <mat-icon matChipAvatar>check_circle</mat-icon>
+              Completado
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="pb-2">
+        <div class="space-y-2">
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">build</mat-icon>
+            <span class="text-sm">{{ job.tipoMantenimiento }}</span>
+          </div>
+
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">schedule</mat-icon>
+            <span class="text-sm">
+              Duración: {{ getTiempoDuracion(job.fechaInicio, job.fechaFinalizacion) }}
+              (Est: {{ job.horasEstimadas || 0 }}h)
+            </span>
+          </div>
+
+          <div class="flex items-center">
+            <mat-icon class="text-green-500 mr-2 text-sm">event_available</mat-icon>
+            <span class="text-sm font-medium text-green-700">
+              {{ getTiempoDesdeCompletion(job.fechaFinalizacion) }}
+            </span>
+          </div>
+
+          <div class="flex items-center">
+            <mat-icon class="text-gray-500 mr-2 text-sm">today</mat-icon>
+            <span class="text-sm">Finalizado: {{ job.fechaFinalizacion | date:'short' }}</span>
+          </div>
+
+          <p class="text-gray-700 text-sm mt-2 line-clamp-2">
+            {{ job.descripcion }}
+          </p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="flex justify-between items-center pt-2">
+        <button
+          mat-raised-button
+          color="primary"
+          size="small"
+          (click)="verDetalles(job)"
+        >
+          <mat-icon class="mr-1">visibility</mat-icon>
+          Ver Detalles
+        </button>
+
+        <div class="text-right">
+          <div class="text-xs text-gray-500">ID Trabajo</div>
+          <div class="font-mono text-sm">#{{ job.trabajoId }}</div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading() && !error() && completedJobs().length === 0 && allCompletedJobs().length === 0" class="text-center py-12">
+    <mat-icon class="text-gray-400 text-6xl mb-4">history</mat-icon>
+    <h3 class="text-xl font-medium text-gray-700 mb-2">No tienes trabajos completados</h3>
+    <p class="text-gray-500 mb-4">Completa algunos trabajos para ver tu historial aquí.</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon class="mr-2">assignment</mat-icon>
+      Ver Trabajos Asignados
+    </button>
+  </div>
+
+  <!-- Empty State por Filtros -->
+  <div *ngIf="!isLoading() && !error() && completedJobs().length === 0 && allCompletedJobs().length > 0" class="text-center py-12">
+    <mat-icon class="text-gray-400 text-6xl mb-4">filter_list_off</mat-icon>
+    <h3 class="text-xl font-medium text-gray-700 mb-2">No se encontraron trabajos</h3>
+    <p class="text-gray-500 mb-4">No hay trabajos que coincidan con los filtros seleccionados.</p>
+    <button mat-stroked-button (click)="clearFilters()">
+      <mat-icon class="mr-2">clear</mat-icon>
+      Limpiar Filtros
+    </button>
+  </div>
+
+</div>

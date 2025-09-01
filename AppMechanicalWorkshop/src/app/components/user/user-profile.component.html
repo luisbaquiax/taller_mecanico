@@ -1,0 +1,290 @@
+<div class="p-6 max-w-4xl mx-auto">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center">
+      <button mat-icon-button (click)="goBack()" class="mr-2">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Mi Perfil</h2>
+        <p class="text-gray-600">Gestiona tu información personal y configuraciones de seguridad</p>
+      </div>
+    </div>
+    <!-- Badge del rol -->
+    <div class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+      {{ currentUserRole() }}
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-12">
+    <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error()" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <div class="flex items-center">
+      <mat-icon class="mr-2">error</mat-icon>
+      <span>{{ error() }}</span>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="!isLoading() && profile()" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Información Personal -->
+    <div class="lg:col-span-2">
+      <mat-card class="mb-6">
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2">person</mat-icon>
+            Información Personal
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="pt-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <mat-form-field class="w-full" >
+              <mat-label>Nombre</mat-label>
+              <input matInput
+                     [value]="formData().name"
+                     (input)="updateFormData('name', $any($event.target).value)">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field  class="w-full">
+              <mat-label>Apellido</mat-label>
+              <input matInput
+                     [value]="formData().lastName"
+                     (input)="updateFormData('lastName', $any($event.target).value)">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field  class="w-full">
+              <mat-label>Correo Electrónico</mat-label>
+              <input matInput type="email"
+                     [value]="formData().email"
+                     (input)="updateFormData('email', $any($event.target).value)">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field  class="w-full">
+              <mat-label>Teléfono</mat-label>
+              <input matInput
+                     [value]="formData().phone"
+                     (input)="updateFormData('phone', $any($event.target).value)">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="mt-4 flex justify-end">
+            <button mat-raised-button
+                    color="primary"
+                    (click)="saveProfile()"
+                    [disabled]="isSaving()">
+              <mat-icon class="mr-2">save</mat-icon>
+              {{ isSaving() ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Cambio de Contraseña -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2">lock</mat-icon>
+            Seguridad
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="pt-4">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h4 class="font-medium">Cambiar Contraseña</h4>
+              <p class="text-sm text-gray-600">Actualiza tu contraseña para mayor seguridad</p>
+            </div>
+            <button mat-stroked-button
+                    color="primary"
+                    (click)="togglePasswordForm()">
+              <mat-icon class="mr-2">{{ showPasswordForm() ? 'visibility_off' : 'edit' }}</mat-icon>
+              {{ showPasswordForm() ? 'Cancelar' : 'Cambiar' }}
+            </button>
+          </div>
+
+          <div *ngIf="showPasswordForm()" class="space-y-4">
+            <mat-form-field  class="w-full">
+              <mat-label>Contraseña Actual</mat-label>
+              <input matInput type="password"
+                     [value]="passwordForm().currentPassword"
+                     (input)="updatePasswordForm('currentPassword', $any($event.target).value)">
+              <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field  class="w-full">
+              <mat-label>Nueva Contraseña</mat-label>
+              <input matInput type="password"
+                     [value]="passwordForm().newPassword"
+                     (input)="updatePasswordForm('newPassword', $any($event.target).value)">
+              <mat-icon matSuffix>lock_open</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field  class="w-full">
+              <mat-label>Confirmar Nueva Contraseña</mat-label>
+              <input matInput type="password"
+                     [value]="passwordForm().confirmPassword"
+                     (input)="updatePasswordForm('confirmPassword', $any($event.target).value)">
+              <mat-icon matSuffix>lock_open</mat-icon>
+            </mat-form-field>
+
+            <div class="flex justify-end">
+              <button mat-raised-button
+                      color="accent"
+                      (click)="changePassword()"
+                      [disabled]="isSaving()">
+                <mat-icon class="mr-2">save</mat-icon>
+                Cambiar Contrase;a
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Panel de Seguridad -->
+    <div>
+      <!-- Información de la Cuenta -->
+      <mat-card class="mb-6">
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2">info</mat-icon>
+            Información de Cuenta
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="pt-4">
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Usuario:</span>
+              <span class="font-medium">{{ profile()?.username }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">ID:</span>
+              <span class="font-medium">{{ profile()?.userId }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Rol:</span>
+              <span class="font-medium">{{ currentUserRole() }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Estado:</span>
+              <span class="px-2 py-1 rounded text-xs"
+                    [ngClass]="profile()?.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                {{ profile()?.active ? 'Activo' : 'Inactivo' }}
+              </span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Autenticación 2FA -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title class="flex items-center">
+            <mat-icon class="mr-2">security</mat-icon>
+            Autenticación 2FA
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="pt-4">
+
+          <!-- Estado actual -->
+          <div class="mb-6 p-4 rounded-lg"
+               [ngClass]="formData().twoFactorAuth ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <mat-icon [class]="formData().twoFactorAuth ? 'text-green-600' : 'text-gray-400'">
+                  {{ formData().twoFactorAuth ? 'verified_user' : 'security' }}
+                </mat-icon>
+                <div class="ml-3">
+                  <p class="font-medium" [class]="formData().twoFactorAuth ? 'text-green-800' : 'text-gray-800'">
+                    {{ formData().twoFactorAuth ? 'Activado' : 'Desactivado' }}
+                  </p>
+                  <p class="text-sm text-gray-600">
+                    Autenticación de dos factores
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggle 2FA -->
+          <div class="mb-4">
+            <mat-slide-toggle
+              [checked]="formData().twoFactorAuth"
+              (change)="updateFormData('twoFactorAuth', $event.checked)"
+              color="primary">
+              Habilitar autenticación 2FA
+            </mat-slide-toggle>
+          </div>
+
+          <!-- Método de 2FA -->
+          <div *ngIf="formData().twoFactorAuth" class="mb-4">
+            <mat-form-field  class="w-full">
+              <mat-label>Método de autenticación</mat-label>
+              <mat-select [value]="formData().typeTwoFactorId"
+                          (selectionChange)="updateFormData('typeTwoFactorId', $event.value)">
+                <mat-option *ngFor="let type of twoFactorTypes()" [value]="type.id">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2">
+                      {{ type.id === 1 ? 'sms' : 'email' }}
+                    </mat-icon>
+                    <div>
+                      <div>{{ type.name }}</div>
+                      <div class="text-sm text-gray-600">{{ type.description }}</div>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Info del método actual -->
+          <div *ngIf="formData().twoFactorAuth" class="mb-4 p-3 bg-blue-50 rounded-lg">
+            <div class="flex items-start">
+              <mat-icon class="text-blue-600 mr-2">info</mat-icon>
+              <div class="text-sm">
+                <p class="font-medium text-blue-800">Método actual: {{ getTwoFactorTypeName(formData().typeTwoFactorId) }}</p>
+                <p class="text-blue-600">
+                  <span *ngIf="formData().typeTwoFactorId === 1">Los códigos se enviarán a: {{ formData().phone }}</span>
+                  <span *ngIf="formData().typeTwoFactorId === 2">Los códigos se enviarán a: {{ formData().email }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="space-y-2">
+            <button mat-raised-button
+                    color="primary"
+                    class="w-full"
+                    (click)="saveProfile()"
+                    [disabled]="isSaving()">
+              <mat-icon class="mr-2">save</mat-icon>
+              Guardar Configuración 2FA
+            </button>
+
+            <button *ngIf="formData().twoFactorAuth"
+                    mat-stroked-button
+                    color="accent"
+                    class="w-full"
+                    (click)="testTwoFactor()"
+                    [disabled]="isSaving()">
+              <mat-icon class="mr-2">send</mat-icon>
+              Probar Código 2FA
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+
+</div>
