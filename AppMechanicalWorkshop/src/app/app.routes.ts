@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { Login } from './components/login/login';
 import { NavAdmin } from './components/admin/nav-admin/nav-admin';
@@ -16,6 +16,10 @@ import {UserProfileComponent} from './components/user/user-profile.component';
 import { RegisterPartComponenet } from './components/admin/register-part/register-part';
 import { AddInventoryComponent } from './components/admin/add-inventory/add-inventory';
 import { ListPartsComponent } from './components/admin/list-parts/list-parts';
+import { NavUsers } from './components/users/nav-users/nav-users';
+import { MainUsers } from './components/users/main-users/main-users';
+import { combineLatest } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const routes: Routes = [
   {
@@ -108,11 +112,21 @@ export const routes: Routes = [
     path: 'register-client',
     component: RegisterClientComponent,
     title: 'Register Client',
+  }, 
+  {
+    path: 'client',
+    component: NavUsers,
+    children: [{
+      path: '',
+      component: MainUsers,
+      title: 'Main view',
+    }
+    ],
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), BrowserAnimationsModule],
   exports: [RouterModule]
 })
 
