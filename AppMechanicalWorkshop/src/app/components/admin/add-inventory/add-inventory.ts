@@ -13,8 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOption } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
-// Importaciones de formularios reactivos
-import { FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import {
   MatSnackBar,
   MatSnackBarAction,
@@ -22,6 +20,8 @@ import {
   MatSnackBarLabel,
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
+// Importaciones de formularios reactivos
+import { FormGroup, Validators, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { F, V } from '@angular/cdk/keycodes';
 import { PartDTO } from '../../../interfaces/PartDTO';
 import { PartService } from '../../../services/Part.service';

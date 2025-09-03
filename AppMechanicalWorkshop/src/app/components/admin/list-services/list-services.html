@@ -1,0 +1,104 @@
+<div class="p-4">
+  <button
+    matIconButton
+    class="!rounded p-4 m-4 text-dark"
+    (click)="showFormService()"
+    title="Agregar servicio"
+  >
+    @if(showForm) {
+    <mat-icon>keyboard_double_arrow_up</mat-icon>
+    } @else {
+    <mat-icon>add</mat-icon>
+    }
+  </button>
+
+  @if (showForm) {
+  <h3 class="text-2xl font-bold text-center bg mb-2">Agregar servicio</h3>
+  <form class="mb-4 transition-discrete" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- Nombre del servicio -->
+    <mat-form-field floatLabel="always" class="w-full mb-4">
+      <mat-label>Nombre del servicio</mat-label>
+      <input matInput formControlName="name" placeholder="Ingrese el nombre del servicio" />
+      @if(registerForm.get('name')?.hasError('required')) {
+      <mat-error>El nombre de usuario es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Descripcion del servicio -->
+    <mat-form-field floatLabel="always" class="w-full mb-4">
+      <mat-label>Descripción del servicio</mat-label>
+      <input matInput formControlName="description" placeholder="Ingrese la descripción" />
+      @if(registerForm.get('description')?.hasError('required')) {
+      <mat-error>El nombre de usuario es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Precio base -->
+    <mat-form-field floatLabel="always" class="w-full mb-4">
+      <mat-label>Precio base del servicio</mat-label>
+      <input matInput formControlName="price" />
+      @if(registerForm.get('price')?.hasError('required')) {
+      <mat-error>El nombre de usuario es obligatorio</mat-error>
+      }
+    </mat-form-field>
+    <div class="text-center">
+      <button
+        matButton="filled"
+        class="w-full !rounded-none"
+        type="submit"
+        [disabled]="!registerForm.valid"
+        (click)="showFormService()"
+      >
+        Guardar
+      </button>
+    </div>
+  </form>
+  }
+
+  <h2 class="text-2xl font-bold text-center bg mb-2">Servicios</h2>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Service Type ID Column -->
+    <ng-container matColumnDef="serviceTypeId">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.serviceTypeId }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nameServiceType">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameServiceType }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="descriptionServiceType">
+      <th mat-header-cell *matHeaderCellDef>Descripción</th>
+      <td mat-cell *matCellDef="let element">{{ element.descriptionServiceType }}</td>
+    </ng-container>
+
+    <!-- Base Price Column -->
+    <ng-container matColumnDef="basePrice">
+      <th mat-header-cell *matHeaderCellDef>Precio Base</th>
+      <td mat-cell *matCellDef="let element">{{ element.basePrice | currency : 'Q. ' }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton title="Editar" (click)="editService(element.serviceTypeId)"><mat-icon>edit</mat-icon></button>
+        <button matIconButton title="{{ element.active === true ? 'Desactivar' : 'Activar' }}">
+          <mat-icon>{{
+            element.active === true ? 'do_not_disturb_off' : 'data_saver_on'
+          }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  @if(!dataSource.length && !loading){
+  <div>No hay datos disponibles</div>
+  }
+</div>
