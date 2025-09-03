@@ -1,36 +1,34 @@
 <div class="p-4">
   <h2 class="text-2xl font-bold text-center bg">Lista de Usuarios</h2>
-  <div class="row">
-    <div class="col-2">
-      <button
-        mat-raised-button
-        class="!rounded p-4 m-4 text-dark"
-        (click)="getUsersByIsActive(true)"
-      >
-        TODOS
-      </button>
-      <button
-        mat-raised-button
-        class="!rounded p-4 m-4 text-dark"
-        (click)="getUsersByIsActive(true)"
-      >
-        ACTIVOS
-      </button>
-      <button
-        mat-raised-button
-        class="!rounded p-4 m-4 text-dark"
-        (click)="getUsersByIsActive(false)"
-      >
-        DESACTIVADOS
-      </button>
-      <!--
-      <mat-form-field>
-              <mat-label>Buscar</mat-label>
-              <input matInput placeholder="Buscar" #input />
-            </mat-form-field>
-      -->
-    </div>
-  </div>
+
+<div class="flex gap-4 items-center justify-start p-3 rounded-lg shadow-md bg-gray-200">
+  <button
+    mat-button
+    color="primary"
+    class="!rounded-full px-6 py-2 bg-blue-100 hover:bg-blue-200"
+    (click)="getUsersByIsActive(true)"
+  >
+    TODOS
+  </button>
+
+  <button
+    mat-button
+    class="!rounded-full px-6 py-2 bg-green-100 hover:bg-green-200"
+    (click)="getUsersByIsActive(true)"
+  >
+    ACTIVOS
+  </button>
+
+  <button
+    mat-button
+    class="!rounded-full px-6 py-2 bg-red-100 hover:bg-red-200"
+    (click)="getUsersByIsActive(false)"
+  >
+    DESACTIVADOS
+  </button>
+</div>
+
+
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
     <!-- Position Column -->
     <ng-container matColumnDef="userId">

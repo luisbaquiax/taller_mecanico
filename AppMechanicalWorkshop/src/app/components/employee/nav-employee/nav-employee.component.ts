@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'; // ← AGREGAR
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav } from '@angular/material/sidenav';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-nav-employee',
@@ -13,7 +14,7 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './nav-employee.component.html',
   styleUrl: './nav-employee.component.css',
 })
-export class NavEmployeeComponent {
+export class NavEmployeeComponent implements OnInit {
 
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
 
@@ -21,6 +22,10 @@ export class NavEmployeeComponent {
     private router: Router,
     private authService: AuthService
   ) {}
+
+  ngOnInit(): void {
+
+  }
 
   toggleSidenav() {
     this.sidenav.toggle();

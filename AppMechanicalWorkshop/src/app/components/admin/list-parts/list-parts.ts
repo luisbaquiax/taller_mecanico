@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
 // Importaciones de Angular Material
@@ -26,7 +26,7 @@ import { PartDTO } from '../../../interfaces/PartDTO';
   templateUrl: './list-parts.html',
   styleUrl: './list-parts.css',
 })
-export class ListPartsComponent {
+export class ListPartsComponent implements OnInit {
   displayedColumns: string[] = [
     'partId',
     'supplierId',
@@ -41,6 +41,9 @@ export class ListPartsComponent {
   ];
   dataSource: PartDTO[] = [];
   constructor(private partService: PartService, private _snackBar: MatSnackBar) {
+  }
+
+  ngOnInit(): void {
     this.getAllParts();
   }
 

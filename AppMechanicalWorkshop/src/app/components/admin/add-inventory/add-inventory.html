@@ -3,13 +3,15 @@
     <h2 class="text-2xl font-bold mb-4 text-center">Agregar stock a inventario</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-      <!-- Repuesto -->
+        <!-- Repuesto -->
         <mat-form-field floatLabel="always" class="w-full mb-4">
           <mat-label>Repuesto</mat-label>
           <mat-select formControlName="parId">
-            <mat-option *ngFor="let part of parts" [value]="part.partId">
-              {{ part.namePart }} ( {{ part.stockPart }} unidades disponibles )
+            @for (item of parts; track $index) {
+            <mat-option  [value]="item.partId">
+              {{ item.namePart }} ( {{ item.stockPart }} unidades disponibles )
             </mat-option>
+            }
           </mat-select>
           @if (registerForm.get('parId')?.hasError('required')) {
           <mat-error>El repuesto debe ser seleccionado</mat-error>

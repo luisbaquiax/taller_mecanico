@@ -9,7 +9,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface JobRepository extends CrudRepository<Job, Long> {
+    List<Job> findJobByStatusJobId(long jobId);
 
+    Job findByJobId(Long jobId);
+
+    List<Job> findJobByStatusJobId(Long statusJobId);
+
+    Job getByJobId(Long jobId);
 
     @Query(value = "SELECT tj.name_type_job, " +
             "services_types.name_service_type, " +
