@@ -13,8 +13,9 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user-service/User.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UserDTO } from '../../interfaces/UserDTO';
+import { filter } from 'rxjs';
 
 interface TwoFactorType {
   id: number;
@@ -85,8 +86,13 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      this.loadProfile();
+    });
+
     this.loadProfile();
     this.setupUserRoleInfo();
+
   }
 
   setupUserRoleInfo() {

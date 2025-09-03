@@ -72,11 +72,24 @@
                 <h3 class="px-3 py-2 text-sm font-semibold uppercase text-gray-400">
                     Configuración y ajustes
                 </h3>
-                <button type="button" routerLinkActive="bg-gray-800"
-                    class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white">
-                    <mat-icon class="mr-2">logout</mat-icon>
-                    Cerrar sesión
-                </button>
+                <button
+          type="button"
+          routerLinkActive="bg-gray-800"
+          class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          (click)="goToProfile()"
+        >
+          <mat-icon class="mr-2">profile</mat-icon>
+          Mi Perfil
+        </button>
+        <button
+          type="button"
+          routerLinkActive="bg-gray-800"
+          class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-white"
+          (click)="logout()"
+        >
+          <mat-icon class="mr-2">logout</mat-icon>
+          Cerrar sesión
+        </button>
             </div>
         </nav>
     </mat-sidenav>

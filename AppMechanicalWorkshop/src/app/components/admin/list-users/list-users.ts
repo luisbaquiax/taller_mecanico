@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 // Importaciones de Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { RoleDTO } from '../../../interfaces/RoleDTO';
   templateUrl: './list-users.html',
   styleUrl: './list-users.css',
 })
-export class ListUsersComponent {
+export class ListUsersComponent implements OnInit {
   displayedColumns: string[] = [
     'userId',
     'rolId',
@@ -41,6 +41,10 @@ export class ListUsersComponent {
     private roleService: RoleService,
     private _snack: MatSnackBar
   ) {
+
+  }
+
+  ngOnInit(): void {
     this.setDataSource();
     this.setRoles();
   }

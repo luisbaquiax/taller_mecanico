@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface JobAssigmentRepository extends CrudRepository<JobAssigment, Long> {
+    JobAssigment findByJobAssignmentIdAndUserId(Long jobId, Long userId);
     List<JobAssigment> findByUserIdAndUnassignedAtIsNull(Long userId);
     List<JobAssigment> findByUserId(Long userId);
     List<JobAssigment> findByJobId(Long jobId);
