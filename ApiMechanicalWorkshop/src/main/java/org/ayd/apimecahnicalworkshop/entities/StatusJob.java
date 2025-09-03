@@ -1,4 +1,5 @@
 package org.ayd.apimecahnicalworkshop.entities;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "status_jobs")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data @AllArgsConstructor @NoArgsConstructor
 public class StatusJob {
     @Id
